@@ -1,0 +1,123 @@
+<!-- Стили карточек мест: название и рейтинг лежат на фото без фона,
+     нижний край фото плавно растворяется в белую часть карточки -->
+<style>
+    .card__media {
+        position: relative;
+        aspect-ratio: 4 / 3.3;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .card__photo {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        background: #fff;
+        -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
+                mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
+    }
+
+    .card__photo img,
+    .card__photo .card__placeholder {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .card__photo img {
+        filter: saturate(1.1) brightness(1.06);
+        transition: transform 0.6s var(--footer-ease);
+    }
+    .card:hover .card__photo img { transform: scale(1.05); }
+
+    .card__placeholder {
+        background: color-mix(in srgb, var(--manas-color) 30%, #fff);
+    }
+
+    /* Затемнение под текстом, чтобы белые буквы читались на любом фото */
+    .card__photo::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            to top,
+            rgba(15, 40, 65, 0.18) 0%,
+            rgba(15, 40, 65, 0.5) 20%,
+            rgba(15, 40, 65, 0.34) 38%,
+            rgba(15, 40, 65, 0) 62%
+        );
+        pointer-events: none;
+    }
+
+    .card__badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.94);
+        color: var(--footer-blue-dark);
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    /* Название и рейтинг: поверх фото, внизу, без фоновой плашки */
+    .card__caption {
+        position: absolute;
+        left: 18px;
+        right: 18px;
+        bottom: 16%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55), 0 2px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .card__name {
+        display: -webkit-box;
+        margin: 0;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        font-size: 1.25rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+        color: #fff;
+    }
+
+    .card__rating {
+        position: static;
+        flex: none;
+        right: auto;
+        bottom: auto;
+        padding: 0;
+        border-radius: 0;
+        background: none;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.92);
+        white-space: nowrap;
+    }
+
+    .card__star {
+        color: #fbbf24;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    }
+
+    .card__body {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+        padding: 0 18px 18px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .card__photo img { transition: none; }
+        .card:hover .card__photo img { transform: none; }
+    }
+</style>

@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Регистрация — ManasOur{% endblock %}
+
+{% block description %}Создайте аккаунт в ManasOur, чтобы добавлять места и помогать жителям находить лучшее в городе Манас.{% endblock %}
+
+{% block extra_css %}
+<style>
+  .auth__row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .auth__agree {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  .auth__agree input {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: var(--footer-green-dark);
+    cursor: pointer;
+  }
+
+  .auth__agree a {
+    color: var(--footer-blue-dark);
+    font-weight: 600;
+  }
+
+  .auth__agree a:hover { text-decoration: underline; }
+
+  @media (max-width: 520px) {
+    .auth__row { grid-template-columns: 1fr; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+
+<section class="auth">
+  <div class="auth__card">
+
+    <aside class="auth__aside">
+      <p class="auth__brand"><span class="auth__brand-manas">Manas</span><span class="auth__brand-our">Our</span></p>
+      <h2 class="auth__aside-title">Присоединяйтесь</h2>
+      <p class="auth__aside-text">С аккаунтом можно добавлять места и помогать жителям находить лучшее в городе.</p>
+    </aside>
+
+    <div class="auth__main">
+      <h1 class="auth__title">Регистрация</h1>
+      <p class="auth__subtitle">Заполните данные, чтобы создать аккаунт.</p>
+
+      <form class="auth__form" method="post" novalidate>
+        {% csrf_token %}
+
+        {% if messages %}
+        <div class="auth__alert" role="alert">
+          {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="field">
+          <label class="field__label" for="id_username">Логин</label>
+          <input
+            class="field__input{% if errors.username %} field__input--error{% endif %}"
+            type="text" name="username" id="id_username"
+            value="{{ form_data.username|default:'' }}"
+            autocomplete="username" autofocus required
+          >
+          {% if errors.username %}<p class="field__error">{{ errors.username }}</p>{% endif %}
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="id_email">Электронная почта</label>
+          <input
+            class="field__input{% if errors.email %} field__input--error{% endif %}"
+            type="email" name="email" id="id_email"
+            value="{{ form_data.email|default:'' }}"
+            autocomplete="email" required
+          >
+          {% if errors.email %}<p class="field__error">{{ errors.email }}</p>{% endif %}
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="id_password1">Пароль</label>
+          <div class="field__wrap">
+            <input
+              class="field__input{% if errors.password1 %} field__input--error{% endif %}"
+              type="password" name="password1" id="id_password1"
+              autocomplete="new-password" required
+            >
+            <button class="field__toggle" type="button" data-toggle-password="id_password1" aria-label="Показать пароль">
+              <i class="bi bi-eye"></i>
+            </button>
+          </div>
+          <p class="field__hint">Не короче 8 символов, не только цифры.</p>
+          {% if errors.password1 %}<p class="field__error">{{ errors.password1 }}</p>{% endif %}
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="id_password2">Повторите пароль</label>
+          <input
+            class="field__input{% if errors.password2 %} field__input--error{% endif %}"
+            type="password" name="password2" id="id_password2"
+            autocomplete="new-password" required
+          >
+          {% if errors.password2 %}<p class="field__error">{{ errors.password2 }}</p>{% endif %}
+        </div>
+
+        <div class="field">
+          <label class="auth__agree" for="id_agreement">
+            <input type="checkbox" name="agreement" id="id_agreement" required>
+            <span>
+              Я принимаю
+              <a href="{% url 'privacy' %}">политику конфиденциальности</a>
+              и <a href="{% url 'terms' %}">условия использования</a>
+            </span>
+          </label>
+          {% if errors.agreement %}<p class="field__error">{{ errors.agreement }}</p>{% endif %}
+        </div>
+
+        <button class="auth__submit" type="submit">Создать аккаунт</button>
+      </form>
+
+      <p class="auth__switch">Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('[data-toggle-password]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var input = document.getElementById(btn.dataset.togglePassword);
+      var show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      btn.setAttribute('aria-label', show ? 'Скрыть пароль' : 'Показать пароль');
+      btn.querySelector('i').className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+    });
+  });
+</script>
+{% endblock %}

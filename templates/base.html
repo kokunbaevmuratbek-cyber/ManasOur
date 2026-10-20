@@ -1,0 +1,85 @@
+{% load static %}<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}ManasOur — Наш Манас{% endblock %}</title>
+    <meta name="description" content="{% block description %}ManasOur — открой свой город{% endblock %}">
+
+    <!-- Шрифт сайта -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap">
+
+    <!-- Bootstrap Icons (нужны для иконок bi-... в шапке и на страницах входа) -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Меняйте число после v=, когда правите CSS и браузер показывает старое -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=3" />
+
+    <!-- Футер всегда внизу и не сжимается. Стоит после styles.css, поэтому перебивает его -->
+    <style>
+        html { height: auto; }
+        body {
+            min-height: 100vh; height: auto; display: flex; flex-direction: column; margin: 0;
+            font-family: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        }
+        .main-content { flex: 1 0 auto; }
+        footer, .site-footer { flex-shrink: 0; }
+
+        /* ===== Шрифт логотипа ManasOur =====
+           Чтобы сменить шрифт, поменяйте название ниже и в ссылке на Google Fonts выше
+           (пробуйте Sora, Lexend, Urbanist, Montserrat) */
+        :root { --font-logo: "Outfit", "Manrope", system-ui, sans-serif; }
+
+        .navbar-brand span:first-of-type,
+        footer h4,
+        .hero__logo,
+        .auth__brand,
+        .wordmark {
+            font-family: var(--font-logo);
+        }
+
+        /* ===== Футер: текст чуть крупнее, пустоты меньше ===== */
+        footer { font-size: 1.05rem; }
+        footer h4 { font-size: 2.4rem; }
+        footer h6 { font-size: 1.15rem; margin-bottom: 1.35rem; }
+        footer p { max-width: 52ch; }
+        footer ul li { margin-bottom: 0.8rem; }
+        footer ul a { gap: 0.7rem; }
+        footer .d-flex.gap-3 a { width: 48px; height: 48px; font-size: 1.3rem; }
+        footer .btn-outline-light { padding: 0.7rem 1.6rem; font-size: 1rem; }
+        footer .text-decoration-none.text-secondary { font-size: 0.95rem; }
+
+        /* Первая колонка уже, последняя шире: «Наш город — наша история» не упирается в край */
+        @media (min-width: 992px) {
+            footer .row { grid-template-columns: 1.4fr 1fr 1fr 1.3fr; }
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <!-- HEADER -->
+    {% include "includes/header.html" %}
+
+    <!-- Основная часть страницы -->
+    <main class="main-content">{% block content %}{% endblock %}</main>
+
+    <!-- FOOTER -->
+    {% include "includes/footer.html" %}
+
+    <!-- Мобильная версия (работает только на экранах уже 768px) -->
+    {% include "mobile_styles.html" %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    {% block extra_js %}{% endblock %}
+    {% include "mobile_styles.html" %}
+</body>
+</html>

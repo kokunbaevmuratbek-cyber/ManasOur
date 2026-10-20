@@ -1,0 +1,450 @@
+<!-- Стили шапки: лежат прямо здесь, поэтому не зависят от кэша и путей к static -->
+<style>
+.navbar .btn,
+.navbar button {
+    font-family: inherit;
+}
+
+/* ===== Порядок элементов ===== */
+
+/* Телефон: аккаунт, логотип, Войти (для гостя), бургер, затем меню */
+.navbar .nav-user       { order: 1; }
+.navbar .navbar-brand   { order: 2; }
+.navbar .nav-login      { order: 3; margin-left: auto; }
+.navbar .navbar-toggler { order: 4; margin-left: auto; }
+.navbar .nav-login + .navbar-toggler { margin-left: 0; }
+.navbar .navbar-collapse { order: 5; }
+
+/* Компьютер: аккаунт, логотип, меню, Войти справа (для гостя) */
+@media (min-width: 992px) {
+    .navbar .navbar-collapse { order: 3; }
+    .navbar .nav-login       { order: 4; margin-left: 0; }
+}
+
+.navbar .nav-user,
+.navbar .nav-login {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar .nav-user__form {
+    margin: 0;
+}
+
+
+/* ===== Кнопка аккаунта и «Войти» =====
+   Цвет (градиент, белый текст, тень) берётся из общих стилей .navbar .btn */
+
+.navbar .btn.btn-login {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.6rem 1.3rem;
+}
+
+
+/* ===== Кнопка «Выйти»: одна дверь, при наведении выезжает слово ===== */
+
+.navbar .btn.logout-btn {
+    position: relative;
+    isolation: isolate;
+    gap: 0;
+    height: 42px;
+    padding: 0 0.8rem;
+    overflow: hidden;
+}
+
+/* Красная заливка проявляется поверх градиента при наведении */
+.navbar .btn.logout-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(135deg, #f87171, #dc2626);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.navbar .btn.logout-btn:hover,
+.navbar .btn.logout-btn:focus-visible {
+    box-shadow: 0 12px 24px rgba(220, 38, 38, 0.32);
+}
+
+.navbar .btn.logout-btn:hover::before,
+.navbar .btn.logout-btn:focus-visible::before {
+    opacity: 1;
+}
+
+.navbar .btn.logout-btn i {
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: transform 0.4s var(--footer-ease);
+}
+
+.logout-btn__label {
+    max-width: 0;
+    margin-left: 0;
+    overflow: hidden;
+    opacity: 0;
+    white-space: nowrap;
+    font-weight: 700;
+    transform: translateX(-8px);
+    transition:
+        max-width 0.45s var(--footer-ease),
+        margin-left 0.45s var(--footer-ease),
+        opacity 0.3s ease,
+        transform 0.45s var(--footer-ease);
+}
+
+.navbar .btn.logout-btn:hover i,
+.navbar .btn.logout-btn:focus-visible i {
+    transform: translateX(-2px) scale(1.1);
+}
+
+.navbar .btn.logout-btn:hover .logout-btn__label,
+.navbar .btn.logout-btn:focus-visible .logout-btn__label {
+    max-width: 5rem;
+    margin-left: 0.5rem;
+    opacity: 1;
+    transform: none;
+}
+
+.navbar .btn.logout-btn:active {
+    transform: scale(0.96);
+}
+
+
+/* ===== Телефон ===== */
+
+@media (max-width: 575.98px) {
+    .navbar > .container {
+        column-gap: 0.5rem;
+    }
+
+    /* У аккаунта остаётся только иконка, слово «Выйти» не выезжает */
+    .navbar .btn.btn-login {
+        padding: 0.55rem 0.9rem;
+    }
+
+    .nav-user__name,
+    .logout-btn__label,
+    .navbar-brand .tagline {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .navbar .btn.logout-btn i,
+    .navbar .btn.logout-btn::before,
+    .logout-btn__label {
+        transition: none;
+    }
+}
+
+/* ===== Название по центру между «Выйти» и «Главная» (на компьютере, когда вы вошли) ===== */
+
+@media (min-width: 992px) {
+    /* Меню занимает только своё место, а свободное место делится поровну
+       слева и справа от названия */
+    .navbar .nav-user ~ .navbar-collapse {
+        flex: 0 1 auto;
+    }
+
+    .navbar .nav-user ~ .navbar-brand {
+        margin-inline: auto;
+    }
+}
+
+
+/* ===== Окно подтверждения выхода ===== */
+
+.logout-dialog {
+    position: fixed;
+    inset: 0;
+    width: min(92vw, 400px);
+    height: fit-content;
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--footer-border);
+    border-radius: 24px;
+    background: #ffffff;
+    color: var(--footer-text);
+    box-shadow: 0 30px 70px rgba(23, 50, 77, 0.28);
+}
+
+.logout-dialog[open] {
+    animation: logout-pop 0.35s var(--footer-ease);
+}
+
+.logout-dialog::backdrop {
+    background: rgba(23, 50, 77, 0.45);
+    -webkit-backdrop-filter: blur(3px);
+            backdrop-filter: blur(3px);
+}
+
+@keyframes logout-pop {
+    from { opacity: 0; transform: translateY(14px) scale(0.96); }
+}
+
+.logout-dialog__body {
+    padding: 32px 28px 28px;
+    text-align: center;
+}
+
+.logout-dialog__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: #fef2f2;
+    color: #dc2626;
+    font-size: 1.7rem;
+}
+
+.logout-dialog__title {
+    margin: 0 0 8px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--footer-title);
+}
+
+.logout-dialog__text {
+    margin: 0 0 24px;
+    line-height: 1.55;
+}
+
+.logout-dialog__actions {
+    display: flex;
+    gap: 10px;
+}
+
+.logout-dialog__actions form {
+    flex: 1;
+    margin: 0;
+}
+
+.logout-dialog__cancel,
+.logout-dialog__confirm {
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 999px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.logout-dialog__cancel {
+    flex: 1;
+    background: #ffffff;
+    color: var(--footer-title);
+    border: 1px solid var(--footer-border);
+}
+
+.logout-dialog__cancel:hover {
+    background: var(--footer-bg-hover);
+}
+
+.logout-dialog__confirm {
+    background: linear-gradient(135deg, #f87171, #dc2626);
+    color: #ffffff;
+    border: 0;
+}
+
+.logout-dialog__confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(220, 38, 38, 0.3);
+}
+
+.logout-dialog__cancel:focus-visible,
+.logout-dialog__confirm:focus-visible {
+    outline: 3px solid var(--footer-blue);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .logout-dialog[open] { animation: none; }
+    .logout-dialog__cancel,
+    .logout-dialog__confirm { transition: none; }
+    .logout-dialog__confirm:hover { transform: none; }
+}
+</style>
+
+<header>
+
+    <!-- Основная навигация -->
+    <nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm">
+
+        <div class="container py-2">
+
+            {% if user.is_authenticated %}
+            <!-- Аккаунт и выход: слева, перед названием проекта -->
+            <div class="nav-user">
+
+                <a href="{% url 'profile' %}" class="btn btn-login rounded-pill" title="Мой аккаунт">
+                    <i class="bi bi-person-circle"></i>
+                    <span class="nav-user__name">{{ user.get_username }}</span>
+                </a>
+
+                <button type="button" class="btn btn-login logout-btn"
+                        aria-label="Выйти" aria-haspopup="dialog" data-logout-open>
+                    <i class="bi bi-door-open"></i>
+                    <span class="logout-btn__label">Выйти</span>
+                </button>
+
+            </div>
+            {% else %}
+            <!-- Войти: для гостя, на том же месте, где у вошедшего профиль -->
+            <div class="nav-user">
+                <a href="{% url 'login' %}" class="btn btn-login rounded-pill">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    <span>Войти</span>
+                </a>
+            </div>
+            {% endif %}
+
+
+            <!-- Логотип -->
+            <a href="/" class="navbar-brand">
+                <div>
+                    <span class="fw-bold fs-4">
+                        Manas<span class="text-primary">Our</span>
+                    </span>
+                    <small class="tagline">Открой свой город</small>
+                </div>
+            </a>
+
+
+            <!-- Кнопка мобильного меню -->
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#mainNavbar"
+                    aria-controls="mainNavbar"
+                    aria-expanded="false"
+                    aria-label="Открыть меню">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+
+            <!-- Меню -->
+            <div class="collapse navbar-collapse"
+                 id="mainNavbar">
+
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a href="/" class="nav-link px-3">
+                            <i class="bi bi-house-door me-1"></i>
+                            Главная
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'place_list' %}" class="nav-link px-3">
+                            <i class="bi bi-geo-alt me-1"></i>
+                            Места
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'events' %}" class="nav-link px-3">
+                            <i class="bi bi-calendar-event me-1"></i>
+                            События
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'about' %}" class="nav-link px-3">
+                            <i class="bi bi-info-circle me-1"></i>
+                            О проекте
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <!-- Правая часть меню -->
+                <div class="d-flex align-items-center gap-2">
+
+                    <!-- Поиск -->
+                    <a href="{% url 'place_list' %}"
+                       class="btn btn-light border rounded-circle d-flex
+                              align-items-center justify-content-center"
+                       style="width: 42px; height: 42px;"
+                       title="Поиск">
+                        <i class="bi bi-search"></i>
+                    </a>
+
+                    <!-- Предложить место -->
+                    <a href="{% url 'place_add' %}"
+                       class="btn btn-primary rounded-pill px-4">
+                        <i class="bi bi-plus-lg me-1"></i>
+                        Предложить место
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    {% if user.is_authenticated %}
+    <!-- Окно подтверждения выхода -->
+    <dialog class="logout-dialog" id="logoutDialog" aria-labelledby="logoutTitle">
+        <div class="logout-dialog__body">
+
+            <div class="logout-dialog__icon" aria-hidden="true">
+                <i class="bi bi-door-open"></i>
+            </div>
+
+            <h2 class="logout-dialog__title" id="logoutTitle">Выйти из аккаунта?</h2>
+            <p class="logout-dialog__text">
+                Вы точно хотите выйти? Чтобы войти снова, понадобятся имя пользователя и пароль.
+            </p>
+
+            <div class="logout-dialog__actions">
+                <button type="button" class="logout-dialog__cancel" data-logout-close autofocus>
+                    Остаться
+                </button>
+
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-dialog__confirm">Да, выйти</button>
+                </form>
+            </div>
+
+        </div>
+    </dialog>
+
+    <script>
+        (function () {
+            var dialog = document.getElementById('logoutDialog');
+            var openBtn = document.querySelector('[data-logout-open]');
+            if (!dialog || !openBtn) return;
+
+            openBtn.addEventListener('click', function () { dialog.showModal(); });
+
+            dialog.querySelectorAll('[data-logout-close]').forEach(function (btn) {
+                btn.addEventListener('click', function () { dialog.close(); });
+            });
+
+            // Клик по затемнённому фону закрывает окно
+            dialog.addEventListener('click', function (e) {
+                if (e.target === dialog) dialog.close();
+            });
+        })();
+    </script>
+    {% endif %}
+
+</header>

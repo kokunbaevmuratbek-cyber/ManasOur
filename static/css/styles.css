@@ -1,0 +1,873 @@
+
+:root {
+    /* ===== Основные цвета ManasOur ===== */
+    --manas-color: #38bdf8;
+    --our-color: #22c55e;
+
+    /* ===== Фон ===== */
+    --footer-bg: #eef8f9;
+    --footer-bg-light: #f7fcfc;
+    --footer-bg-hover: #e4f4f5;
+
+    /* ===== Текст ===== */
+    --footer-title: #17324d;
+    --footer-text: #526b7a;
+    --footer-muted: #78909c;
+
+    /* ===== Акценты ===== */
+    --footer-blue: #38bdf8;
+    --footer-blue-dark: #168aad;
+    --footer-green: #22c55e;
+    --footer-green-dark: #168a45;
+
+    /* ===== Дополнительно ===== */
+    --footer-border: #d8ebed;
+    --footer-shadow: rgba(30, 80, 100, 0.08);
+    --footer-radius: 12px;
+    --footer-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+.container {
+    max-width: 1300px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Большие экраны */
+.container {
+    max-width: 1300px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* Ноутбуки и небольшие компьютеры */
+
+
+/* ============================= */
+/*            FOOTER             */
+/* ============================= */
+
+footer {
+    position: relative;
+    overflow: hidden;
+    padding: 3.5rem 0 1.5rem;
+    border-radius: 28px 28px 0 0;
+    border-top: 0;
+    font-size: 0.95rem;
+    color: var(--footer-text);
+
+    background:
+        radial-gradient(circle at 8% 15%, rgba(56, 189, 248, 0.16), transparent 38%),
+        radial-gradient(circle at 92% 85%, rgba(34, 197, 94, 0.12), transparent 38%),
+        linear-gradient(180deg, var(--footer-bg-light) 0%, var(--footer-bg) 100%) !important;
+
+    box-shadow: 0 -10px 30px var(--footer-shadow);
+}
+
+/* Градиентная линия сверху */
+footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--manas-color), var(--our-color));
+}
+
+
+/* ============================= */
+/*   ГОРИЗОНТАЛЬНАЯ СЕТКА        */
+/* ============================= */
+
+/* Колонки идут в одну строку: бренд шире, остальные равные */
+footer .row {
+    display: grid !important;
+    grid-template-columns: 1.7fr 1fr 1fr 1.2fr;
+    gap: 2.5rem;
+    margin: 0 !important;
+    align-items: start;
+}
+
+footer .row > * {
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Тонкие вертикальные разделители между колонками */
+footer .row > *:not(:first-child) {
+    padding-left: 2rem !important;
+    border-left: 1px solid var(--footer-border);
+}
+
+/* Планшет: 2 колонки */
+@media (max-width: 991.98px) {
+    footer .row {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    footer .row > *:not(:first-child) {
+        padding-left: 0 !important;
+        border-left: 0;
+    }
+
+    footer .row > *:first-child {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Телефон: 1 колонка */
+@media (max-width: 575.98px) {
+    footer .row {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ============================= */
+/*            ManasOur           */
+/* ============================= */
+
+footer h4 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+}
+
+/* ===== Логотип ManasOur =====
+   Один плавный градиент на всё слово: Manas — голубой,
+   Our — зелёный. Работает с любой разметкой внутри
+   (span.manas-logo, span.text-primary или просто текст). */
+
+.wordmark,
+footer h4,
+.hero h1,
+.hero-section h1,
+.navbar-brand span:first-of-type,
+.navbar-brand strong {
+    display: inline-block;
+    background-image: linear-gradient(
+        90deg,
+        var(--manas-color) 0%,
+        var(--manas-color) 30%,
+        var(--our-color) 75%,
+        var(--our-color) 100%
+    );
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+/* Вложенные span отдельного цвета не имеют — красит родитель */
+.wordmark *,
+footer h4 *,
+.hero h1 *,
+.hero-section h1 *,
+.navbar-brand span:first-of-type *,
+.navbar-brand strong * {
+    background: none !important;
+    -webkit-text-fill-color: transparent;
+    color: transparent !important;
+}
+
+/* Если .manas-logo / .our-logo стоят сами по себе (вне заголовков) */
+.manas-logo,
+.our-logo {
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.manas-logo {
+    background-image: linear-gradient(90deg, var(--manas-color), #2dc1ab);
+}
+
+.our-logo {
+    background-image: linear-gradient(90deg, #2dc1ab, var(--our-color));
+}
+
+
+/* ============================= */
+/*           Заголовки           */
+/* ============================= */
+
+footer h6 {
+    position: relative;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.7rem;
+    color: var(--footer-title) !important;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+footer h6::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 32px;
+    height: 3px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--manas-color), var(--our-color));
+}
+
+
+/* ============================= */
+/*             Текст             */
+/* ============================= */
+
+footer p {
+    color: var(--footer-text) !important;
+    line-height: 1.75;
+    max-width: 46ch;
+}
+
+footer .text-secondary {
+    color: var(--footer-text) !important;
+}
+
+
+/* ============================= */
+/*            Ссылки             */
+/* ============================= */
+
+footer a {
+    transition: color 0.2s ease, transform 0.25s var(--footer-ease),
+                background 0.25s ease, border-color 0.25s ease,
+                box-shadow 0.25s ease;
+}
+
+footer ul {
+    padding-left: 0;
+    margin: 0;
+    list-style: none;
+}
+
+footer ul li {
+    margin-bottom: 0.6rem;
+}
+
+footer ul a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--footer-text) !important;
+    text-decoration: none;
+}
+
+/* Цветная точка перед ссылкой, при наведении растягивается в черту */
+footer ul a::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--manas-color);
+    transition: width 0.3s var(--footer-ease), background 0.3s ease;
+}
+
+footer ul a:hover {
+    color: var(--footer-blue-dark) !important;
+}
+
+footer ul a:hover::before {
+    width: 16px;
+    border-radius: 3px;
+    background: var(--our-color);
+}
+
+
+/* ============================= */
+/*        Социальные сети        */
+/* ============================= */
+
+/* Иконки (TikTok, Instagram, Telegram) — в одну строку */
+footer .d-flex.gap-3 {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem !important;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+footer .d-flex.gap-3 > li,
+footer .d-flex.gap-3 > div {
+    margin: 0 !important;
+    width: auto;
+}
+
+/* Убираем цветную точку, которая нужна только обычным ссылкам */
+footer .d-flex.gap-3 a::before {
+    content: none;
+}
+
+footer .d-flex.gap-3 a {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    border-radius: 12px;
+    background: #ffffff;
+    color: var(--footer-title) !important;
+    border: 1px solid var(--footer-border);
+    box-shadow: 0 4px 12px var(--footer-shadow);
+}
+
+footer .d-flex.gap-3 a:hover {
+    transform: translateY(-4px);
+    background: linear-gradient(135deg, var(--manas-color), var(--footer-blue-dark));
+    color: #ffffff !important;
+    border-color: var(--manas-color);
+    box-shadow: 0 10px 22px rgba(56, 189, 248, 0.3);
+}
+
+
+/* ============================= */
+/*        Иконки контактов       */
+/* ============================= */
+
+footer .bi-geo-alt,
+footer .bi-building {
+    color: var(--our-color);
+    margin-right: 0.35rem;
+}
+
+
+/* ============================= */
+/*        Кнопка контактов       */
+/* ============================= */
+
+footer .btn-outline-light {
+    padding: 0.6rem 1.4rem;
+    color: var(--footer-title) !important;
+    font-weight: 600;
+    background: #ffffff;
+    border: 1px solid var(--footer-border);
+    border-radius: 10px;
+    box-shadow: 0 3px 10px var(--footer-shadow);
+}
+
+footer .btn-outline-light:hover {
+    background: linear-gradient(135deg, var(--our-color), var(--footer-green-dark));
+    border-color: var(--our-color);
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(34, 197, 94, 0.28);
+}
+
+
+/* ============================= */
+/*              HR               */
+/* ============================= */
+
+footer hr {
+    margin: 2.25rem 0 1.25rem;
+    border: 0;
+    height: 1px;
+    opacity: 1;
+    background: linear-gradient(90deg, transparent, var(--footer-border) 15%, var(--footer-border) 85%, transparent);
+}
+
+
+/* ============================= */
+/*  Нижняя полоса (в одну строку) */
+/* ============================= */
+
+footer .d-flex.flex-column.flex-md-row {
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+footer .text-decoration-none.text-secondary {
+    color: var(--footer-muted) !important;
+    font-size: 0.875rem;
+}
+
+footer .text-decoration-none.text-secondary:hover {
+    color: var(--footer-blue-dark) !important;
+}
+
+
+/* ============================= */
+/*         Доступность           */
+/* ============================= */
+
+footer a:focus-visible {
+    outline: 2px solid var(--footer-blue-dark);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    footer a,
+    footer ul a::before {
+        transition: none;
+    }
+
+    footer .d-flex.gap-3 a:hover,
+    footer .btn-outline-light:hover {
+        transform: none;
+    }
+}
+
+
+/* ============================= */
+/*        Мобильное центрирование */
+/* ============================= */
+
+@media (max-width: 768px) {
+    footer {
+        padding-top: 2.5rem;
+        text-align: center;
+        border-radius: 20px 20px 0 0;
+    }
+
+    footer p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    footer h6::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    footer ul a {
+        justify-content: center;
+    }
+
+    footer .d-flex.gap-3 {
+        justify-content: center;
+    }
+}
+
+
+/* ============================================================ */
+/*                            ШАПКА                             */
+/* ============================================================ */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+
+    padding: 0.8rem clamp(1rem, 4vw, 3rem);
+
+    background:
+        radial-gradient(circle at 5% 0%, rgba(56, 189, 248, 0.16), transparent 40%),
+        radial-gradient(circle at 95% 100%, rgba(34, 197, 94, 0.12), transparent 40%),
+        rgba(247, 252, 252, 0.92);
+    -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+
+    border-bottom: 1px solid var(--footer-border);
+    box-shadow: 0 6px 24px var(--footer-shadow);
+}
+
+/* Градиентная линия снизу — зеркало линии в футере */
+.navbar::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--manas-color), var(--our-color));
+}
+
+.navbar > .container,
+.navbar > .container-fluid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.navbar a {
+    text-decoration: none;
+}
+
+
+/* ===== Логотип: значок + название + подпись ===== */
+
+.navbar-brand {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.8rem;
+    align-items: center;
+    margin: 0;
+    color: var(--footer-title);
+}
+
+/* Значок здания — в градиентной плитке */
+.navbar-brand > i,
+.navbar-brand > svg {
+    grid-row: span 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    font-size: 1.35rem;
+    color: #ffffff;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--manas-color), var(--our-color));
+    box-shadow: 0 6px 16px rgba(56, 189, 248, 0.28);
+}
+
+.navbar-brand span:first-of-type,
+.navbar-brand strong {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+}
+
+.navbar-brand small,
+.navbar-brand .tagline {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--footer-muted);
+}
+
+
+/* ===== Меню ===== */
+
+.navbar-collapse {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+}
+
+.navbar-nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+}
+
+.navbar .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1rem;
+    border-radius: 10px;
+    color: var(--footer-text);
+    font-weight: 600;
+    background: transparent;
+    transition: color 0.2s ease, background 0.2s ease, box-shadow 0.25s ease;
+}
+
+.navbar .nav-link i {
+    color: var(--manas-color);
+    font-size: 1.1rem;
+    transition: color 0.2s ease;
+}
+
+.navbar .nav-link:hover {
+    color: var(--footer-blue-dark);
+    background: var(--footer-bg-hover);
+}
+
+.navbar .nav-link:hover i {
+    color: var(--our-color);
+}
+
+/* Текущая страница */
+.navbar .nav-link.active,
+.navbar .nav-link[aria-current="page"] {
+    color: var(--footer-title);
+    background: #ffffff;
+    box-shadow: 0 4px 12px var(--footer-shadow), inset 0 -2px 0 var(--our-color);
+}
+
+.navbar .nav-link.active i,
+.navbar .nav-link[aria-current="page"] i {
+    color: var(--our-color);
+}
+
+
+/* ===== Кнопки справа ===== */
+
+/* Главная кнопка («Предложить место») */
+.navbar .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.35rem;
+    border: 0;
+    border-radius: 999px;
+    color: #ffffff;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--manas-color), var(--our-color));
+    box-shadow: 0 8px 18px rgba(56, 189, 248, 0.28);
+    cursor: pointer;
+    transition: transform 0.25s var(--footer-ease), box-shadow 0.25s ease;
+}
+
+.navbar .btn:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(34, 197, 94, 0.32);
+}
+
+/* Круглые иконки (поиск, плюс) */
+.navbar .btn-outline-secondary,
+.navbar .btn-outline-primary,
+.navbar .btn-light,
+.navbar .btn-link {
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    justify-content: center;
+    border: 1px solid var(--footer-border);
+    border-radius: 12px;
+    color: var(--footer-title);
+    background: #ffffff;
+    box-shadow: 0 4px 12px var(--footer-shadow);
+}
+
+.navbar .btn-outline-secondary:hover,
+.navbar .btn-outline-primary:hover,
+.navbar .btn-light:hover,
+.navbar .btn-link:hover {
+    color: var(--footer-blue-dark);
+    background: var(--footer-bg-hover);
+    box-shadow: 0 8px 18px var(--footer-shadow);
+}
+
+
+/* ===== Кнопка-бургер (для телефона) ===== */
+
+.navbar-toggler {
+    display: none;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--footer-border);
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 4px 12px var(--footer-shadow);
+    cursor: pointer;
+}
+
+.navbar-toggler-icon {
+    display: none;
+}
+
+.navbar-toggler::before {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--footer-title);
+    box-shadow: 0 -6px 0 var(--footer-title), 0 6px 0 var(--footer-title);
+}
+
+
+/* ===== Первый экран ===== */
+
+.hero,
+.hero-section {
+    position: relative;
+    padding: clamp(3rem, 8vw, 6rem) 1rem;
+    text-align: center;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.16), transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(34, 197, 94, 0.12), transparent 40%),
+        linear-gradient(180deg, var(--footer-bg-light), var(--footer-bg));
+}
+
+.hero h1,
+.hero-section h1 {
+    margin-bottom: 0.75rem;
+    font-size: clamp(2.6rem, 7vw, 4.75rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+}
+
+.hero p,
+.hero-section p {
+    margin: 0 auto;
+    max-width: 52ch;
+    font-size: 1.1rem;
+    color: var(--footer-text);
+}
+
+
+/* ===== Адаптивность шапки ===== */
+
+@media (max-width: 991.98px) {
+    .navbar-toggler {
+        display: inline-flex;
+    }
+
+    /* Меню раскрывается по кнопке-бургеру */
+    .navbar-collapse:not(.show) {
+        display: none;
+    }
+
+    .navbar-collapse.show {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--footer-border);
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        margin: 0;
+    }
+
+    .navbar .nav-link {
+        width: 100%;
+    }
+
+    .navbar .btn:not(.btn-outline-secondary):not(.btn-outline-primary):not(.btn-light):not(.btn-link) {
+        justify-content: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .navbar .btn,
+    .navbar .nav-link {
+        transition: none;
+    }
+
+    .navbar .btn:hover {
+        transform: none;
+    }
+}
+html,
+body {
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.main-content {
+  flex: 1;
+}
+
+.site-footer {
+  margin-top: auto;
+}
+
+html { height: auto; }
+
+body {
+  height: auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content { flex: 1 0 auto; }
+
+footer,
+.site-footer { flex-shrink: 0; }
+
+/* Базовые стили для ПК у вас уже есть, а ниже идут правила для телефонов */
+
+@media (max-width: 768px) {
+  /* 1. Шапка и навигация */
+  header, .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+  
+  /* Скрываем громоздкое меню на ПК и готовим место под мобильное (бургер-меню) */
+  .nav-links {
+    display: none; /* Или переводим в вертикальный список */
+  }
+
+  /* 2. Главный экран (Hero-секция с текстом и картинками) */
+  .hero-container {
+    flex-direction: column; /* Элементы встают друг под друга вместо ряда */
+    text-align: center;
+    padding: 20px 10px;
+  }
+
+  /* Заголовки делаем чуть меньше, чтобы они не вылезали за экран */
+  h1 {
+    font-size: 28px !important;
+  }
+
+  /* Блок с плавающими картинками справа на ПК */
+  .hero-images-preview {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* 3. Поисковая строка */
+  .search-box {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .search-box input, 
+  .search-box button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  /* 4. Карточки мест */
+  .places-grid {
+    grid-template-columns: 1fr; /* 1 карточка на строку вместо нескольких */
+    gap: 15px;
+  }
+
+  /* 5. Теги-фильтры (Все места, Достопримечательности и т.д.) */
+  .filter-tags {
+    display: flex;
+    overflow-x: auto; /* Делаем горизонтальную прокрутку для тегов на телефоне */
+    white-space: nowrap;
+    padding-bottom: 10px;
+  }
+}

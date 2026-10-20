@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Вход — ManasOur{% endblock %}
+
+{% block description %}Войдите в ManasOur, чтобы оставлять отзывы и предлагать новые места в городе Манас.{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+
+<section class="auth">
+  <div class="auth__card">
+
+    <aside class="auth__aside">
+      <p class="auth__brand"><span class="auth__brand-manas">Manas</span><span class="auth__brand-our">Our</span></p>
+      <h2 class="auth__aside-title">С возвращением</h2>
+      <p class="auth__aside-text">Войдите, чтобы оставлять отзывы о местах и предлагать те, которых ещё нет на сайте.</p>
+    </aside>
+
+    <div class="auth__main">
+      <h1 class="auth__title">Вход</h1>
+      <p class="auth__subtitle">Введите имя пользователя и пароль.</p>
+
+      <form class="auth__form" method="post" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+
+        {% if form.non_field_errors %}
+        <div class="auth__alert" role="alert">
+          {% for e in form.non_field_errors %}<p>{{ e }}</p>{% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="field">
+          <label class="field__label" for="id_username">Имя пользователя</label>
+          <input
+            class="field__input{% if form.username.errors %} field__input--error{% endif %}"
+            type="text" name="username" id="id_username"
+            value="{{ form.username.value|default:'' }}"
+            autocomplete="username" autofocus required
+          >
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="id_password">Пароль</label>
+          <div class="field__wrap">
+            <input
+              class="field__input{% if form.password.errors %} field__input--error{% endif %}"
+              type="password" name="password" id="id_password"
+              autocomplete="current-password" required
+            >
+            <button class="field__toggle" type="button" data-toggle-password="id_password" aria-label="Показать пароль">
+              <i class="bi bi-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button class="auth__submit" type="submit">Войти</button>
+      </form>
+
+      <p class="auth__switch">Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('[data-toggle-password]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var input = document.getElementById(btn.dataset.togglePassword);
+      var show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      btn.setAttribute('aria-label', show ? 'Скрыть пароль' : 'Показать пароль');
+      btn.querySelector('i').className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+    });
+  });
+</script>
+{% endblock %}

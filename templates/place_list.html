@@ -1,0 +1,577 @@
+{% extends "base.html" %}
+
+{% block title %}{{ place.name }} — ManasOur{% endblock %}
+
+{% block description %}{{ place.description|truncatechars:150 }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .pd, .pd *, .pd *::before, .pd *::after { box-sizing: border-box; }
+
+    .pd {
+        padding: clamp(28px, 5vw, 56px) 20px;
+        background: var(--footer-bg-light);
+        color: var(--footer-text);
+        line-height: 1.7;
+    }
+
+    .pd__wrap {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        max-width: 1040px;
+        margin: 0 auto;
+    }
+
+    /* ===== Назад ===== */
+    .pd__back {
+        align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 18px;
+        background: #fff;
+        border: 1px solid var(--footer-border);
+        border-radius: 999px;
+        color: var(--footer-title);
+        font-weight: 600;
+        text-decoration: none;
+        box-shadow: 0 4px 12px var(--footer-shadow);
+        transition: background 0.2s var(--footer-ease), color 0.2s var(--footer-ease), border-color 0.2s var(--footer-ease);
+    }
+
+    .pd__back i { transition: transform 0.25s var(--footer-ease); }
+
+    .pd__back:hover {
+        background: var(--footer-bg-hover);
+        border-color: var(--footer-blue);
+        color: var(--footer-blue-dark);
+    }
+
+    .pd__back:hover i { transform: translateX(-3px); }
+
+    @media (min-width: 1320px) {
+        .pd__back {
+            position: absolute;
+            top: 0;
+            right: calc(100% + 24px);
+        }
+    }
+
+    /* ===== Верх: галерея слева, данные справа ===== */
+    .pd__top {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+        gap: 28px;
+        align-items: start;
+    }
+
+    /* ===== Галерея ===== */
+    .pd__gallery { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+
+    .pd__main {
+        position: relative;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        background: var(--footer-bg);
+        border: 1px solid var(--footer-border);
+        border-radius: 24px;
+        box-shadow: 0 16px 40px var(--footer-shadow);
+    }
+
+    .pd__slide {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 0.35s var(--footer-ease);
+    }
+
+    .pd__slide.is-active { opacity: 1; }
+
+    /* Заглушка, пока своего фото нет */
+    .pd__slide--ph,
+    .pd__thumb--ph {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--manas-color) 24%, #fff),
+            color-mix(in srgb, var(--our-color) 20%, #fff)
+        );
+        color: var(--footer-blue-dark);
+    }
+
+    .pd__slide--ph i { font-size: 3rem; opacity: 0.75; }
+    .pd__slide--ph span { font-weight: 600; }
+
+    .pd__arrow {
+        position: absolute;
+        top: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        padding: 0;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.92);
+        border: 0;
+        border-radius: 50%;
+        color: var(--footer-title);
+        font-size: 1.05rem;
+        box-shadow: 0 6px 16px rgba(23, 50, 77, 0.2);
+        cursor: pointer;
+        transition: background 0.2s var(--footer-ease);
+    }
+
+    .pd__arrow:hover { background: #fff; }
+    .pd__arrow--prev { left: 12px; }
+    .pd__arrow--next { right: 12px; }
+
+    .pd__counter {
+        position: absolute;
+        right: 12px;
+        bottom: 12px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.94);
+        color: var(--footer-title);
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+
+    .pd__thumbs {
+        display: flex;
+        gap: 10px;
+        margin: 0;
+        padding: 2px 2px 6px;
+        overflow-x: auto;
+        list-style: none;
+    }
+
+    .pd__thumb {
+        flex: none;
+        width: 96px;
+        height: 68px;
+        padding: 0;
+        overflow: hidden;
+        background: var(--footer-bg);
+        border: 2px solid transparent;
+        border-radius: 12px;
+        opacity: 0.7;
+        cursor: pointer;
+        transition: opacity 0.2s var(--footer-ease), border-color 0.2s var(--footer-ease);
+    }
+
+    .pd__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .pd__thumb--ph { font-size: 1.4rem; }
+    .pd__thumb:hover { opacity: 1; }
+    .pd__thumb.is-active { border-color: var(--footer-blue); opacity: 1; }
+
+    /* ===== Правая колонка ===== */
+    .pd__side { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+
+    .pd__badges { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+
+    .pd__cat {
+        padding: 4px 14px;
+        border-radius: 999px;
+        background: var(--footer-bg);
+        color: var(--footer-blue-dark);
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .pd__cat:hover { background: var(--footer-bg-hover); }
+
+    .pd__rating {
+        padding: 4px 14px;
+        border-radius: 999px;
+        background: #f0fdf4;
+        color: var(--footer-green-dark);
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+
+    .pd__star { color: #f59e0b; }
+
+    .pd__title {
+        margin: 8px 0 0;
+        font-size: clamp(1.8rem, 4.5vw, 2.5rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+        color: var(--footer-title);
+        overflow-wrap: anywhere;
+    }
+
+    .pd__card {
+        padding: clamp(20px, 3vw, 28px);
+        background: #fff;
+        border: 1px solid var(--footer-border);
+        border-radius: 24px;
+        box-shadow: 0 16px 40px var(--footer-shadow);
+    }
+
+    .pd__h {
+        margin: 0 0 12px;
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: var(--footer-title);
+    }
+
+    .pd__text p { margin: 0 0 12px; }
+    .pd__text p:last-child { margin-bottom: 0; }
+
+    .pd__list { display: flex; flex-direction: column; gap: 14px; margin: 0; }
+    .pd__item dt { font-size: 0.85rem; color: var(--footer-muted); }
+
+    .pd__item dd {
+        margin: 2px 0 0;
+        font-weight: 600;
+        color: var(--footer-title);
+        overflow-wrap: anywhere;
+    }
+
+    /* ===== Комментарии ===== */
+    .pdc__head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .pdc__head .pd__h { margin: 0; }
+    .pdc__count { font-size: 0.9rem; color: var(--footer-muted); }
+
+    .pdc__form { display: flex; flex-direction: column; gap: 12px; margin-bottom: 26px; }
+
+    .pdc__input {
+        width: 100%;
+        min-height: 100px;
+        padding: 13px 16px;
+        resize: vertical;
+        background: var(--footer-bg-light);
+        border: 1px solid var(--footer-border);
+        border-radius: var(--footer-radius);
+        font: inherit;
+        color: var(--footer-title);
+        transition: border-color 0.2s var(--footer-ease), box-shadow 0.2s var(--footer-ease), background 0.2s var(--footer-ease);
+    }
+
+    .pdc__input:focus {
+        outline: none;
+        background: #fff;
+        border-color: var(--footer-blue);
+        box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18);
+    }
+
+    .pdc__input--error { border-color: #dc2626; }
+    .pdc__error { margin: 0; font-size: 0.85rem; color: #b91c1c; }
+
+    .pdc__submit {
+        align-self: flex-start;
+        padding: 11px 26px;
+        border: 0;
+        border-radius: 999px;
+        background: var(--footer-title);
+        color: #fff;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.25s var(--footer-ease);
+    }
+
+    .pdc__submit:hover { background: var(--footer-green-dark); }
+
+    .pdc__login {
+        margin: 0 0 26px;
+        padding: 14px 18px;
+        background: var(--footer-bg);
+        border-radius: var(--footer-radius);
+    }
+
+    .pdc__login a { color: var(--footer-blue-dark); font-weight: 700; }
+
+    .pdc__list {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .pdc__item { display: flex; gap: 14px; }
+
+    .pdc__avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--manas-color), var(--our-color));
+        color: #fff;
+        font-weight: 800;
+    }
+
+    .pdc__body {
+        flex: 1;
+        min-width: 0;
+        padding: 12px 16px;
+        background: var(--footer-bg-light);
+        border: 1px solid var(--footer-border);
+        border-radius: 16px;
+    }
+
+    .pdc__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-bottom: 4px; }
+    .pdc__name { font-weight: 700; color: var(--footer-title); }
+    .pdc__date { font-size: 0.85rem; color: var(--footer-muted); }
+
+    .pdc__del-form { margin: 0 0 0 auto; }
+
+    .pdc__del {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        background: transparent;
+        border: 0;
+        border-radius: 8px;
+        color: var(--footer-muted);
+        cursor: pointer;
+        transition: background 0.2s var(--footer-ease), color 0.2s var(--footer-ease);
+    }
+
+    .pdc__del:hover { background: #fef2f2; color: #dc2626; }
+
+    .pdc__text { margin: 0; overflow-wrap: anywhere; }
+    .pdc__empty { margin: 0; color: var(--footer-muted); }
+
+    .pd :focus-visible {
+        outline: 3px solid var(--footer-blue);
+        outline-offset: 2px;
+    }
+
+    @media (max-width: 860px) {
+        .pd__top { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .pd__back, .pd__back i, .pd__arrow, .pd__thumb, .pd__slide,
+        .pdc__input, .pdc__submit, .pdc__del { transition: none; }
+        .pd__back:hover i { transform: none; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="pd">
+    <div class="pd__wrap">
+
+        <a class="pd__back" href="{% url 'place_list' %}"
+           onclick="if (window.history.length > 1) { window.history.back(); return false; }">
+            <i class="bi bi-arrow-left"></i>
+            Назад
+        </a>
+
+        <div class="pd__top">
+
+            <!-- Фотографии: свои, а пока их мало, дальше идут заглушки -->
+            <div class="pd__gallery">
+                <div class="pd__main">
+                    {% for img in images %}
+                    <img class="pd__slide{% if forloop.first %} is-active{% endif %}"
+                         src="{{ img.image.url }}" alt="{{ place.name }}, фото {{ forloop.counter }}">
+                    {% endfor %}
+
+                    {% for p in placeholders %}
+                    <div class="pd__slide pd__slide--ph{% if not images and forloop.first %} is-active{% endif %}">
+                        <i class="bi bi-image"></i>
+                        <span>Фото скоро появится</span>
+                    </div>
+                    {% endfor %}
+
+                    {% if total > 1 %}
+                    <button class="pd__arrow pd__arrow--prev" id="pdPrev" type="button" aria-label="Предыдущее фото">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button class="pd__arrow pd__arrow--next" id="pdNext" type="button" aria-label="Следующее фото">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                    <span class="pd__counter" id="pdCounter">1 / {{ total }}</span>
+                    {% endif %}
+                </div>
+
+                {% if total > 1 %}
+                <ul class="pd__thumbs">
+                    {% for img in images %}
+                    <li>
+                        <button class="pd__thumb{% if forloop.first %} is-active{% endif %}" type="button"
+                                aria-label="Фото {{ forloop.counter }}">
+                            <img src="{{ img.image.url }}" alt="" loading="lazy">
+                        </button>
+                    </li>
+                    {% endfor %}
+                    {% for p in placeholders %}
+                    <li>
+                        <button class="pd__thumb pd__thumb--ph{% if not images and forloop.first %} is-active{% endif %}" type="button"
+                                aria-label="Фото {{ images|length|add:forloop.counter }}">
+                            <i class="bi bi-image"></i>
+                        </button>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+
+            <!-- Название и данные -->
+            <div class="pd__side">
+                <div>
+                    <div class="pd__badges">
+                        {% if place.category %}
+                        <a class="pd__cat" href="{% url 'place_list' %}?category={{ place.category.slug }}">{{ place.category.name }}</a>
+                        {% endif %}
+                        <span class="pd__rating" title="Рейтинг по отзывам"><span class="pd__star" aria-hidden="true">★</span> {{ place.review|floatformat:1 }}</span>
+                    </div>
+                    <h1 class="pd__title">{{ place.name }}</h1>
+                </div>
+
+                <div class="pd__card">
+                    <h2 class="pd__h">О месте</h2>
+                    <dl class="pd__list">
+                        <div class="pd__item">
+                            <dt>Адрес</dt>
+                            <dd>{{ place.address }}</dd>
+                        </div>
+
+                        <div class="pd__item">
+                            <dt>Популярность</dt>
+                            <dd>{{ place.popular|floatformat:0 }}</dd>
+                        </div>
+
+                        <div class="pd__item">
+                            <dt>Добавил</dt>
+                            <dd>{{ place.owner.get_username }}</dd>
+                        </div>
+
+                        <div class="pd__item">
+                            <dt>Дата добавления</dt>
+                            <dd>{{ place.created_at|date:"j E Y" }}</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Описание -->
+        <div class="pd__card">
+            <h2 class="pd__h">Описание</h2>
+            <div class="pd__text">{{ place.description|linebreaks }}</div>
+        </div>
+
+        <!-- Комментарии -->
+        <div class="pd__card" id="comments">
+            <div class="pdc__head">
+                <h2 class="pd__h">Комментарии</h2>
+                <span class="pdc__count">{{ comments|length }}</span>
+            </div>
+
+            {% if user.is_authenticated %}
+            <form class="pdc__form" method="post" action="{{ request.path }}#comments" novalidate>
+                {% csrf_token %}
+                <textarea
+                    class="pdc__input{% if comment_form.text.errors %} pdc__input--error{% endif %}"
+                    name="text" maxlength="1000"
+                    placeholder="Расскажите, как вам это место"
+                    aria-label="Ваш комментарий">{{ comment_form.text.value|default:'' }}</textarea>
+                {% for e in comment_form.text.errors %}<p class="pdc__error">{{ e }}</p>{% endfor %}
+                <button class="pdc__submit" type="submit">Отправить</button>
+            </form>
+            {% else %}
+            <p class="pdc__login">
+                <a href="{% url 'login' %}?next={{ request.path }}">Войдите</a>,
+                чтобы оставить комментарий.
+            </p>
+            {% endif %}
+
+            {% if comments %}
+            <ul class="pdc__list">
+                {% for c in comments %}
+                <li class="pdc__item">
+                    <div class="pdc__avatar" aria-hidden="true">{{ c.author.get_username|slice:":1"|upper }}</div>
+                    <div class="pdc__body">
+                        <div class="pdc__meta">
+                            <span class="pdc__name">{{ c.author.get_username }}</span>
+                            <span class="pdc__date">{{ c.created_at|date:"j E Y, H:i" }}</span>
+
+                            {% if user.is_authenticated and user.pk == c.author_id or user.is_staff %}
+                            <form class="pdc__del-form" method="post"
+                                  action="{% url 'comment_delete' c.pk %}"
+                                  onsubmit="return confirm('Удалить комментарий?');">
+                                {% csrf_token %}
+                                <button class="pdc__del" type="submit" aria-label="Удалить комментарий" title="Удалить">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                        <p class="pdc__text">{{ c.text|linebreaksbr }}</p>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="pdc__empty">Пока нет комментариев. Будьте первым!</p>
+            {% endif %}
+        </div>
+
+    </div>
+</section>
+
+<script>
+    (function () {
+        var slides = document.querySelectorAll('.pd__slide');
+        var thumbs = document.querySelectorAll('.pd__thumb');
+        var counter = document.getElementById('pdCounter');
+        var prev = document.getElementById('pdPrev');
+        var next = document.getElementById('pdNext');
+        if (slides.length < 2) return;
+
+        var index = 0;
+
+        function show(i) {
+            index = (i + slides.length) % slides.length;
+            slides.forEach(function (s, n) { s.classList.toggle('is-active', n === index); });
+            thumbs.forEach(function (t, n) { t.classList.toggle('is-active', n === index); });
+            if (counter) counter.textContent = (index + 1) + ' / ' + slides.length;
+        }
+
+        thumbs.forEach(function (t, n) { t.addEventListener('click', function () { show(n); }); });
+        if (prev) prev.addEventListener('click', function () { show(index - 1); });
+        if (next) next.addEventListener('click', function () { show(index + 1); });
+
+        document.addEventListener('keydown', function (e) {
+            // Не листаем фото, пока человек печатает комментарий
+            var tag = (e.target.tagName || '').toLowerCase();
+            if (tag === 'textarea' || tag === 'input') return;
+            if (e.key === 'ArrowLeft') show(index - 1);
+            if (e.key === 'ArrowRight') show(index + 1);
+        });
+    })();
+</script>
+{% endblock %}

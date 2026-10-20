@@ -1,0 +1,292 @@
+<!-- Мобильная версия.
+     ВСЕ правила лежат внутри @media (max-width: 767.98px), поэтому компьютерная
+     версия (и планшеты шире 768px) остаются как были.
+     Подключается в base.html в самом конце <body>, чтобы перебить остальные стили. -->
+<style>
+@media (max-width: 767.98px) {
+
+    /* ===== Общее ===== */
+    body { overflow-x: clip; }
+    img { max-width: 100%; }
+
+    .btn,
+    button,
+    .chip { min-height: 44px; }
+
+    /* ===== Шапка ===== */
+    .navbar { padding: 0.55rem 1rem; }
+
+    .navbar-brand span:first-of-type { font-size: 1.25rem; }
+
+    .navbar-collapse .d-flex {
+        flex-wrap: wrap;
+        width: 100%;
+        padding-bottom: 0.5rem;
+    }
+
+    .navbar-collapse .btn-primary {
+        flex: 1;
+        justify-content: center;
+    }
+
+    /* ===== Главная ===== */
+    /* Отступы и рамки входят в ширину блока, иначе карточки, поиск и кнопки
+       вылезают за правый край экрана */
+    .home,
+    .home *,
+    .home *::before,
+    .home *::after { box-sizing: border-box; }
+
+    .home .container { padding-inline: 12px; }
+
+    .hero { padding: 2rem 0 2.5rem; }
+    .hero__logo { font-size: clamp(2.6rem, 14vw, 4rem); }
+    .hero__tagline { margin: 16px auto 22px; font-size: 1rem; }
+    .search { max-width: 100%; }
+    .search__input { padding: 0 14px; }
+    .search__btn { padding: 12px 18px; }
+    .hero__hint { font-size: 0.85rem; }
+    .collage { max-width: 320px; }
+
+    /* Панель категорий не прилипает: под липкой шапкой она пряталась */
+    .filters { position: static; }
+
+    /* Категории и сортировка не крутятся вбок: стоят рядами, а что не поместилось
+       в ширину экрана, переносится на следующую строку */
+    .filters .chips {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        padding: 10px 0 4px !important;
+        overflow: visible !important;
+        scroll-snap-type: none !important;
+    }
+
+    .filters .chips + .chips { padding: 0 0 12px !important; }
+
+    .filters .chips li { flex: 0 1 auto; min-width: 0; }
+
+    .filters .chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 6px 14px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        line-height: 1.2;
+        text-align: center;
+    }
+
+    .places { padding: 28px 0 56px; }
+    .places__title { font-size: 1.5rem; }
+
+    /* Карточки мест как в маркетплейсе: две колонки, фото сверху, текст под фото.
+       Селекторы с .home и !important, чтобы стили компьютерной версии их не перебивали */
+    .home .grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 18px 12px !important;
+    }
+
+    .home .card {
+        overflow: visible;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .home .card:hover { border-color: transparent; box-shadow: none; }
+
+    .home .card__media { aspect-ratio: auto; background: transparent; }
+
+    .home .card__photo {
+        position: relative;
+        inset: auto;
+        aspect-ratio: 4 / 5;
+        border-radius: 14px;
+        -webkit-mask-image: none;
+                mask-image: none;
+    }
+
+    .home .card__photo::after { display: none; }
+
+    .home .card__photo img,
+    .home .card__photo .card__placeholder {
+        position: absolute;
+        inset: 0;
+    }
+
+    .home .card__badge {
+        top: 8px;
+        left: 8px;
+        max-width: calc(100% - 16px);
+        padding: 2px 9px;
+        overflow: hidden;
+        font-size: 0.68rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Название и рейтинг переезжают из фото под фото */
+    .home .card__caption {
+        position: static;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        padding: 8px 2px 0;
+        text-shadow: none;
+    }
+
+    .home .card__name {
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0;
+        line-height: 1.25;
+        color: var(--footer-title);
+    }
+
+    .home .card__rating { font-size: 0.8rem; font-weight: 600; color: var(--footer-text); }
+    .home .card__star { text-shadow: none; }
+
+    .home .card__body { gap: 2px; padding: 2px 2px 0; }
+
+    .home .card__address {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
+        font-size: 0.75rem;
+    }
+
+    /* Длинное описание и популярность на телефоне не нужны: они на странице места */
+    .home .card__desc,
+    .home .card__popular { display: none; }
+
+    .cta { margin-top: 36px; padding: 24px 20px; border-radius: 22px; }
+    .cta__btn { width: 100%; text-align: center; }
+
+    /* ===== Страница места ===== */
+    .pd { padding: 20px 16px 36px; }
+    .pd__wrap { gap: 20px; }
+    .pd__main { border-radius: 18px; }
+    .pd__arrow { width: 36px; height: 36px; }
+    .pd__thumb { width: 72px; height: 54px; }
+    .pd__title { font-size: 1.7rem; }
+    .pd__card { padding: 18px; border-radius: 18px; }
+
+    .pdc__item { gap: 10px; }
+    .pdc__avatar { width: 36px; height: 36px; font-size: 0.9rem; }
+    .pdc__body { padding: 10px 12px; }
+    .pdc__submit { width: 100%; }
+
+    /* ===== Вход, регистрация, профиль, формы ===== */
+    .auth { padding: 20px 14px 32px; }
+    .auth__card { border-radius: 20px; }
+    .auth__main { padding: 24px 20px; }
+    .auth__title { font-size: 1.6rem; }
+
+    .profile,
+    .pa,
+    .pe,
+    .info { padding: 20px 14px 32px; }
+
+    .profile__card,
+    .pa__card,
+    .pe__card,
+    .info__card { padding: 20px 18px; border-radius: 18px; }
+
+    .profile__avatar { width: 64px; height: 64px; font-size: 1.7rem; }
+    .profile__head { gap: 14px; }
+
+    /* ===== Подвал: компактный ===== */
+    footer { padding: 1.5rem 0 1rem; font-size: 0.95rem; }
+    footer .container { padding-inline: 16px; box-sizing: border-box; }
+
+    /* Навигация и Разделы стоят рядом, бренд и контакты занимают всю ширину */
+    footer .row {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 1.25rem 1rem !important;
+    }
+
+    footer .row > *:first-child,
+    footer .row > *:last-child { grid-column: 1 / -1 !important; }
+
+    footer h4 { margin-bottom: 0.4rem; font-size: 1.8rem; }
+
+    footer p {
+        max-width: none;
+        margin-bottom: 0.6rem;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    footer .d-flex.gap-3 { gap: 0.5rem !important; margin-top: 0.4rem; }
+    footer .d-flex.gap-3 a { width: 40px; height: 40px; font-size: 1.1rem; }
+
+    footer h6 {
+        margin-bottom: 0.7rem;
+        padding-bottom: 0.5rem;
+        font-size: 1rem;
+    }
+
+    footer ul li { margin-bottom: 0.4rem; }
+    footer ul a { gap: 0.5rem; font-size: 0.92rem; }
+
+    footer .btn-outline-light { padding: 0.5rem 1.2rem; font-size: 0.95rem; }
+
+    footer hr { margin: 1.1rem 0 0.8rem; }
+
+    .footer-bottom { gap: 0.4rem 1rem !important; font-size: 0.85rem; }
+    .footer-bottom p { margin: 0; font-size: 0.85rem; }
+
+    .footer-bottom,
+    .footer-legal {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .footer-legal { gap: 0.25rem 1rem !important; }
+}
+
+/* Шапка на телефоне: профиль и «Выйти» остаются ровными круглыми кнопками, как на компьютере.
+   (Имя рядом с иконкой на таком экране скрыто, поэтому кнопка без текста.) */
+@media (max-width: 575.98px) {
+    .navbar .nav-user a.btn-login[title="Мой аккаунт"],
+    .navbar .nav-user .logout-btn {
+        flex: none;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        min-height: 0;
+        padding: 0 !important;
+        border-radius: 50%;
+    }
+
+    .navbar .nav-user a.btn-login[title="Мой аккаунт"] i,
+    .navbar .nav-user .logout-btn i {
+        font-size: 1.25rem;
+        line-height: 1;
+    }
+}
+
+/* Телефоны уже iPhone 12–16 (меньше 390px) или крупный размер шрифта в настройках:
+   места идут в один ряд, чтобы фото и текст не были мелкими.
+   Порог задан в em: 24.3em = примерно 389px при обычном шрифте (формула: пиксели / 16).
+   Чем крупнее шрифт у человека в настройках, тем шире экран, на котором включается один ряд. */
+@media (max-width: 24.3em) {
+    .home .grid { grid-template-columns: minmax(0, 1fr) !important; }
+
+    .home .card__photo { aspect-ratio: 4 / 3; }
+    .home .card__name { font-size: 1.05rem; }
+    .home .card__rating { font-size: 0.9rem; }
+
+    .home .card__address {
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        font-size: 0.85rem;
+    }
+}
+</style>

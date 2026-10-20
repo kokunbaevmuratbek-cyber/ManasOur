@@ -1,0 +1,52 @@
+{% extends "page_base.html" %}
+
+{% block title %}Связаться с нами — ManasOur{% endblock %}
+{% block description %}Напишите команде ManasOur: вопросы, предложения и сообщения об ошибках.{% endblock %}
+
+{% block page_title %}Связаться с нами{% endblock %}
+
+{% block page_body %}
+{% if sent %}
+<p class="info__notice" role="status">Спасибо! Сообщение отправлено, мы скоро ответим.</p>
+{% endif %}
+
+<p class="info__lead">Есть вопрос, предложение или нашли ошибку? Напишите нам.</p>
+
+<form class="fm" method="post" novalidate>
+    {% csrf_token %}
+
+    <div class="fm__field">
+        <label class="fm__label" for="id_name">Ваше имя</label>
+        <input
+            class="fm__input{% if form.name.errors %} fm__input--error{% endif %}"
+            type="text" name="name" id="id_name"
+            value="{{ form.name.value|default:'' }}"
+            maxlength="100" autocomplete="name" required
+        >
+        {% for e in form.name.errors %}<p class="fm__error">{{ e }}</p>{% endfor %}
+    </div>
+
+    <div class="fm__field">
+        <label class="fm__label" for="id_email">Электронная почта</label>
+        <input
+            class="fm__input{% if form.email.errors %} fm__input--error{% endif %}"
+            type="email" name="email" id="id_email"
+            value="{{ form.email.value|default:'' }}"
+            autocomplete="email" required
+        >
+        {% for e in form.email.errors %}<p class="fm__error">{{ e }}</p>{% endfor %}
+    </div>
+
+    <div class="fm__field">
+        <label class="fm__label" for="id_message">Сообщение</label>
+        <textarea
+            class="fm__input{% if form.message.errors %} fm__input--error{% endif %}"
+            name="message" id="id_message" required>{{ form.message.value|default:'' }}</textarea>
+        {% for e in form.message.errors %}<p class="fm__error">{{ e }}</p>{% endfor %}
+    </div>
+
+    <div>
+        <button class="info__btn" type="submit" style="margin-top: 0;">Отправить</button>
+    </div>
+</form>
+{% endblock %}

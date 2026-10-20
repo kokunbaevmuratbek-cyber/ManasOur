@@ -1,0 +1,17 @@
+{% extends "page_base.html" %}
+
+{% block title %}События — ManasOur{% endblock %}
+{% block description %}Раздел событий города Манас на ManasOur скоро появится.{% endblock %}
+
+{% block page_title %}События{% endblock %}
+
+{% block page_body %}
+<p class="info__lead">Раздел событий скоро появится.</p>
+
+<p>
+    Здесь будут городские мероприятия: концерты, фестивали и встречи.
+    А пока можно посмотреть, какие места есть в каталоге.
+</p>
+
+<a class="info__btn" href="{% url 'place_list' %}">Смотреть места</a>
+{% endblock %}

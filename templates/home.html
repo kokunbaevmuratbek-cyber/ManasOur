@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}ManasOur — наш город Манас{% endblock %}
+
+{% block description %}Узнайте больше о городе Манас: интересные места, события, городская информация, отзывы и всё самое важное о нашем городе.{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}?v=3">
+{% include "card_styles.html" %}
+
+<main class="home">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero__inner">
+
+      <div class="hero__content">
+        <h1 class="hero__logo">
+          <span class="hero__logo-manas">Manas</span><span class="hero__logo-our">Our</span>
+        </h1>
+        <p class="hero__tagline">
+          Наш город в одном месте. Находите кафе, парки и магазины рядом и читайте отзывы тех, кто там уже был.
+        </p>
+
+        <form class="search" method="get" action="" role="search">
+          <input
+            class="search__input"
+            type="search"
+            name="q"
+            value="{{ request.GET.q }}"
+            placeholder="Что ищете в Манасе?"
+            aria-label="Поиск мест"
+          >
+          <button class="search__btn" type="submit">Найти</button>
+        </form>
+        <p class="hero__hint">Например: кафе, парк, аптека</p>
+      </div>
+
+      {% if listings %}
+      <div class="collage" aria-hidden="true">
+        {% for i in listings|slice:":3" %}
+        {% with img=i.image.first %}
+        <figure class="shot shot--{{ forloop.counter }}">
+          {% if img %}
+            <img src="{{ img.image.url }}" alt="">
+          {% else %}
+            <div class="shot__ph"></div>
+          {% endif %}
+          <figcaption class="shot__name">{{ i.name }}</figcaption>
+        </figure>
+        {% endwith %}
+        {% endfor %}
+      </div>
+      {% endif %}
+
+    </div>
+  </section>
+
+  <!-- Categories -->
+  {% if categories %}
+  <nav class="filters" aria-label="Категории">
+    <div class="container">
+      <ul class="chips">
+        <li>
+          <a class="chip {% if not request.GET.category %}chip--active{% endif %}" href="?">Все места</a>
+        </li>
+        {% for c in categories %}
+        <li>
+          <a
+            class="chip {% if request.GET.category == c.slug %}chip--active{% endif %}"
+            href="?category={{ c.slug }}"
+          >{{ c.name }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </nav>
+  {% endif %}
+
+  <!-- Places -->
+  <section class="places">
+    <div class="container">
+      <div class="places__head">
+        <h2 class="places__title">Места в Манасе</h2>
+        {% if listings %}
+        <span class="places__count">Найдено: {{ listings|length }}</span>
+        {% endif %}
+      </div>
+
+      {% if listings %}
+      <ul class="grid">
+        {% for i in listings %}
+        <li class="card">
+          <a class="card__link" href="{% url 'place_detail' i.pk %}">
+            <div class="card__media">
+              <div class="card__photo">
+                {% with img=i.image.first %}
+                  {% if img %}
+                    <img src="{{ img.image.url }}" alt="{{ i.name }}" loading="lazy">
+                  {% else %}
+                    <div class="card__placeholder" aria-hidden="true"></div>
+                  {% endif %}
+                {% endwith %}
+              </div>
+
+              {% if i.category %}
+              <span class="card__badge">{{ i.category.name }}</span>
+              {% endif %}
+
+              <div class="card__caption">
+                <h3 class="card__name">{{ i.name }}</h3>
+                <span class="card__rating" title="Рейтинг по отзывам"><span class="card__star" aria-hidden="true">★</span> {{ i.review|floatformat:1 }}</span>
+              </div>
+            </div>
+
+            <div class="card__body">
+              <p class="card__address">{{ i.address }}</p>
+              <p class="card__desc">{{ i.description|truncatechars:100 }}</p>
+              <p class="card__popular">Популярность: {{ i.popular|floatformat:0 }}</p>
+            </div>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <div class="empty">
+        <p class="empty__title">Ничего не найдено</p>
+        <p class="empty__text">Попробуйте другой запрос или выберите другую категорию.</p>
+      </div>
+      {% endif %}
+
+      <!-- Call to action -->
+      <aside class="cta">
+        <div>
+          <h2 class="cta__title">Знаете место, которого здесь нет?</h2>
+          <p class="cta__text">Добавьте его, и жители города смогут найти его и оставить отзыв.</p>
+        </div>
+        <a class="cta__btn" href="{% url 'place_add' %}">Добавить место</a>
+      </aside>
+    </div>
+  </section>
+
+</main>
+{% endblock %}

@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}Добавить место — ManasOur{% endblock %}
+
+{% block description %}Расскажите о месте в Манасе, которого ещё нет на сайте ManasOur.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .pa, .pa *, .pa *::before, .pa *::after { box-sizing: border-box; }
+
+    .pa {
+        padding: clamp(32px, 6vw, 64px) 20px;
+        background: var(--footer-bg-light);
+        color: var(--footer-text);
+    }
+
+    .pa__card {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: clamp(22px, 4vw, 38px);
+        background: #fff;
+        border: 1px solid var(--footer-border);
+        border-radius: 24px;
+        box-shadow: 0 16px 40px var(--footer-shadow);
+    }
+
+    .pa__title {
+        margin: 0 0 6px;
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--footer-title);
+    }
+
+    .pa__sub { margin: 0 0 26px; color: var(--footer-muted); }
+
+    .pa__form { display: flex; flex-direction: column; gap: 18px; }
+
+    .pa__field { display: flex; flex-direction: column; gap: 6px; }
+
+    .pa__label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--footer-title);
+    }
+
+    .pa__input {
+        width: 100%;
+        padding: 13px 16px;
+        background: var(--footer-bg-light);
+        border: 1px solid var(--footer-border);
+        border-radius: var(--footer-radius);
+        font: inherit;
+        color: var(--footer-title);
+        transition: border-color 0.2s var(--footer-ease), box-shadow 0.2s var(--footer-ease), background 0.2s var(--footer-ease);
+    }
+
+    textarea.pa__input { min-height: 130px; resize: vertical; }
+
+    .pa__input:focus {
+        outline: none;
+        background: #fff;
+        border-color: var(--footer-blue);
+        box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18);
+    }
+
+    .pa__input--error { border-color: #dc2626; }
+
+    .pa__input::file-selector-button {
+        margin-right: 12px;
+        padding: 8px 16px;
+        border: 1px solid var(--footer-border);
+        border-radius: 999px;
+        background: #fff;
+        color: var(--footer-title);
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .pa__hint { margin: 0; font-size: 0.85rem; color: var(--footer-muted); }
+    .pa__error { margin: 0; font-size: 0.85rem; color: #b91c1c; }
+
+    .pa__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+
+    .pa__save,
+    .pa__cancel {
+        padding: 12px 28px;
+        border-radius: 999px;
+        font: inherit;
+        font-weight: 700;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background 0.25s var(--footer-ease), color 0.25s var(--footer-ease);
+    }
+
+    .pa__save { background: var(--footer-title); color: #fff; border: 0; }
+    .pa__save:hover { background: var(--footer-green-dark); }
+
+    .pa__cancel {
+        background: #fff;
+        color: var(--footer-title);
+        border: 1px solid var(--footer-border);
+    }
+
+    .pa__cancel:hover { background: var(--footer-bg-hover); }
+
+    .pa__save:focus-visible,
+    .pa__cancel:focus-visible {
+        outline: 3px solid var(--footer-blue);
+        outline-offset: 2px;
+    }
+
+    @media (max-width: 560px) {
+        .pa__save, .pa__cancel { flex: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .pa__input, .pa__save, .pa__cancel { transition: none; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="pa">
+    <div class="pa__card">
+
+        <h1 class="pa__title">Добавить место</h1>
+        <p class="pa__sub">Расскажите о месте в Манасе, которого ещё нет на сайте.</p>
+
+        <form class="pa__form" method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            <div class="pa__field">
+                <label class="pa__label" for="id_name">Название</label>
+                <input
+                    class="pa__input{% if form.name.errors %} pa__input--error{% endif %}"
+                    type="text" name="name" id="id_name"
+                    value="{{ form.name.value|default:'' }}"
+                    maxlength="200" autofocus required
+                >
+                {% for e in form.name.errors %}<p class="pa__error">{{ e }}</p>{% endfor %}
+            </div>
+
+            <div class="pa__field">
+                <label class="pa__label" for="id_category">Категория</label>
+                <select class="pa__input" name="category" id="id_category">
+                    <option value="">Без категории</option>
+                    {% for c in form.fields.category.queryset %}
+                    <option value="{{ c.pk }}" {% if form.category.value|stringformat:"s" == c.pk|stringformat:"s" %}selected{% endif %}>{{ c.name }}</option>
+                    {% endfor %}
+                </select>
+                {% for e in form.category.errors %}<p class="pa__error">{{ e }}</p>{% endfor %}
+            </div>
+
+            <div class="pa__field">
+                <label class="pa__label" for="id_address">Адрес</label>
+                <input
+                    class="pa__input{% if form.address.errors %} pa__input--error{% endif %}"
+                    type="text" name="address" id="id_address"
+                    value="{{ form.address.value|default:'' }}"
+                    maxlength="300" required
+                >
+                {% for e in form.address.errors %}<p class="pa__error">{{ e }}</p>{% endfor %}
+            </div>
+
+            <div class="pa__field">
+                <label class="pa__label" for="id_description">Описание</label>
+                <textarea
+                    class="pa__input{% if form.description.errors %} pa__input--error{% endif %}"
+                    name="description" id="id_description" required>{{ form.description.value|default:'' }}</textarea>
+                {% for e in form.description.errors %}<p class="pa__error">{{ e }}</p>{% endfor %}
+            </div>
+
+            <div class="pa__field">
+                <label class="pa__label" for="id_images">Фото</label>
+                <input
+                    class="pa__input{% if photo_error %} pa__input--error{% endif %}"
+                    type="file" name="images" id="id_images" accept="image/*" multiple
+                >
+                <p class="pa__hint">Необязательно. Можно выбрать несколько фото сразу (до 10). Первое станет главным.</p>
+                {% if photo_error %}<p class="pa__error">{{ photo_error }}</p>{% endif %}
+            </div>
+
+            <div class="pa__actions">
+                <button class="pa__save" type="submit">Добавить место</button>
+                <a class="pa__cancel" href="/">Отмена</a>
+            </div>
+        </form>
+
+    </div>
+</section>
+{% endblock %}

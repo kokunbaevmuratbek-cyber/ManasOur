@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+
+{% block title %}Мой аккаунт — ManasOur{% endblock %}
+
+{% block description %}Ваш профиль в ManasOur: данные аккаунта и добавленные места.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile {
+        padding: clamp(32px, 6vw, 64px) 20px;
+        background: var(--footer-bg-light);
+        color: var(--footer-text);
+    }
+
+    .profile__wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        max-width: 860px;
+        margin: 0 auto;
+    }
+
+    .profile__card {
+        padding: clamp(22px, 4vw, 32px);
+        background: #fff;
+        border: 1px solid var(--footer-border);
+        border-radius: 24px;
+        box-shadow: 0 16px 40px var(--footer-shadow);
+    }
+
+    /* ===== Шапка профиля ===== */
+    .profile__head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .profile__avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        width: 84px;
+        height: 84px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--manas-color), var(--our-color));
+        color: #fff;
+        font-size: 2.2rem;
+        font-weight: 800;
+        box-shadow: 0 10px 24px rgba(56, 189, 248, 0.3);
+    }
+
+    .profile__who { flex: 1; min-width: 180px; }
+
+    .profile__name {
+        margin: 0;
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--footer-title);
+        overflow-wrap: anywhere;
+    }
+
+    .profile__login {
+        margin: 4px 0 0;
+        color: var(--footer-muted);
+    }
+
+    .profile__badge {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 3px 12px;
+        border-radius: 999px;
+        background: var(--footer-bg);
+        color: var(--footer-green-dark);
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .profile__stat { text-align: center; }
+
+    .profile__stat-num {
+        display: block;
+        font-size: 2rem;
+        font-weight: 800;
+        line-height: 1;
+        color: var(--footer-title);
+    }
+
+    .profile__stat-label {
+        font-size: 0.85rem;
+        color: var(--footer-muted);
+    }
+
+    /* ===== Данные ===== */
+    .profile__title {
+        margin: 0 0 18px;
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: var(--footer-title);
+    }
+
+    .profile__list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px 28px;
+        margin: 0;
+    }
+
+    .profile__item dt {
+        margin-bottom: 2px;
+        font-size: 0.85rem;
+        color: var(--footer-muted);
+    }
+
+    .profile__item dd {
+        margin: 0;
+        font-weight: 600;
+        color: var(--footer-title);
+        overflow-wrap: anywhere;
+    }
+
+    .profile__item dd.is-empty {
+        font-weight: 500;
+        color: var(--footer-muted);
+    }
+
+    /* ===== Мои места ===== */
+    .profile__places {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .profile__place {
+        padding: 16px 18px;
+        background: var(--footer-bg-light);
+        border: 1px solid var(--footer-border);
+        border-radius: var(--footer-radius);
+    }
+
+    .profile__place-name {
+        margin: 0 0 4px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--footer-title);
+    }
+
+    .profile__place-address {
+        margin: 0 0 10px;
+        font-size: 0.9rem;
+        color: var(--footer-muted);
+    }
+
+    .profile__place-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 0.85rem;
+    }
+
+    .profile__place-cat { color: var(--footer-blue-dark); font-weight: 600; }
+    .profile__place-rating { color: var(--footer-green-dark); font-weight: 700; }
+
+    .profile__empty { margin: 0; color: var(--footer-muted); }
+
+    .profile__edit {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 14px;
+        padding: 0.55rem 1.2rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--manas-color), var(--our-color));
+        color: #fff;
+        font-weight: 600;
+        text-decoration: none;
+        box-shadow: 0 8px 18px rgba(56, 189, 248, 0.28);
+        transition: transform 0.25s var(--footer-ease), box-shadow 0.25s var(--footer-ease);
+    }
+
+    .profile__edit:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(34, 197, 94, 0.32);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .profile__edit { transition: none; }
+        .profile__edit:hover { transform: none; }
+    }
+
+    /* ===== Кнопка «Назад» над карточкой профиля ===== */
+    .profile__back {
+        align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: -6px;
+        padding: 9px 18px;
+        background: #fff;
+        border: 1px solid var(--footer-border);
+        border-radius: 999px;
+        color: var(--footer-title);
+        font-weight: 600;
+        text-decoration: none;
+        box-shadow: 0 4px 12px var(--footer-shadow);
+        transition: background 0.2s var(--footer-ease), color 0.2s var(--footer-ease), border-color 0.2s var(--footer-ease);
+    }
+
+    .profile__back i { transition: transform 0.25s var(--footer-ease); }
+
+    .profile__back:hover {
+        background: var(--footer-bg-hover);
+        border-color: var(--footer-blue);
+        color: var(--footer-blue-dark);
+    }
+
+    .profile__back:hover i { transform: translateX(-3px); }
+
+    .profile__back:focus-visible {
+        outline: 3px solid var(--footer-blue);
+        outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .profile__back, .profile__back i { transition: none; }
+        .profile__back:hover i { transform: none; }
+    }
+
+    /* На широком экране «Назад» стоит слева от карточки, на одной высоте с её верхом.
+       На узком места слева нет, поэтому кнопка остаётся над карточкой. */
+    .profile__wrap { position: relative; }
+
+    @media (min-width: 1181px) {
+        .profile__back {
+            position: absolute;
+            top: 0;
+            right: calc(100% + 24px);
+            margin: 0;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .profile__list { grid-template-columns: 1fr; }
+        .profile__stat { text-align: left; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="profile">
+    <div class="profile__wrap">
+
+        <!-- Назад на главную -->
+        <a class="profile__back" href="/">
+            <i class="bi bi-arrow-left"></i>
+            Назад
+        </a>
+
+        <!-- Шапка профиля -->
+        <div class="profile__card profile__head">
+
+            <div class="profile__avatar" aria-hidden="true">{{ user.get_username|slice:":1"|upper }}</div>
+
+            <div class="profile__who">
+                <h1 class="profile__name">{% firstof user.get_full_name user.get_username %}</h1>
+                <p class="profile__login">@{{ user.get_username }}</p>
+                {% if user.is_staff %}<span class="profile__badge">Администратор</span>{% endif %}
+                <a class="profile__edit" href="{% url 'profile_edit' %}">
+                    <i class="bi bi-pencil"></i> Редактировать профиль
+                </a>
+            </div>
+
+            <div class="profile__stat">
+                <span class="profile__stat-num">{{ places|length }}</span>
+                <span class="profile__stat-label">добавлено мест</span>
+            </div>
+        </div>
+
+        <!-- Данные аккаунта -->
+        <div class="profile__card">
+            <h2 class="profile__title">Данные аккаунта</h2>
+
+            <dl class="profile__list">
+                <div class="profile__item">
+                    <dt>Имя пользователя</dt>
+                    <dd>{{ user.get_username }}</dd>
+                </div>
+
+                <div class="profile__item">
+                    <dt>Электронная почта</dt>
+                    {% if user.email %}<dd>{{ user.email }}</dd>{% else %}<dd class="is-empty">Не указана</dd>{% endif %}
+                </div>
+
+                <div class="profile__item">
+                    <dt>Имя</dt>
+                    {% if user.first_name %}<dd>{{ user.first_name }}</dd>{% else %}<dd class="is-empty">Не указано</dd>{% endif %}
+                </div>
+
+                <div class="profile__item">
+                    <dt>Фамилия</dt>
+                    {% if user.last_name %}<dd>{{ user.last_name }}</dd>{% else %}<dd class="is-empty">Не указана</dd>{% endif %}
+                </div>
+
+                <div class="profile__item">
+                    <dt>Дата регистрации</dt>
+                    <dd>{{ user.date_joined|date:"j E Y" }}</dd>
+                </div>
+
+                <div class="profile__item">
+                    <dt>Последний вход</dt>
+                    <dd>{{ user.last_login|date:"j E Y, H:i"|default:"—" }}</dd>
+                </div>
+            </dl>
+        </div>
+
+        <!-- Мои места -->
+        <div class="profile__card">
+            <h2 class="profile__title">Мои места</h2>
+
+            {% if places %}
+            <ul class="profile__places">
+                {% for p in places %}
+                <li class="profile__place">
+                    <h3 class="profile__place-name">{{ p.name }}</h3>
+                    <p class="profile__place-address">{{ p.address }}</p>
+                    <div class="profile__place-meta">
+                        <span class="profile__place-cat">{% if p.category %}{{ p.category.name }}{% endif %}</span>
+                        <span class="profile__place-rating">★ {{ p.review|floatformat:1 }}</span>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="profile__empty">Вы пока не добавили ни одного места.</p>
+            {% endif %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,182 @@
+<footer class="bg-dark text-white mt-5 site-footer">
+
+        <div class="container">
+
+            <div class="row">
+
+                <!-- ManasOur -->
+                <div class="col-lg-4 col-md-6 mb-4">
+
+                    <h4 class="fw-bold mb-3">
+                        <span class="text-primary">Manas</span>Our
+                    </h4>
+
+                    <p class="text-secondary">
+                        ManasOur — ваш путеводитель по городу.
+                        Интересные места, достопримечательности,
+                        события и всё самое интересное рядом с вами.
+                    </p>
+
+                    <div class="d-flex gap-3 mt-3">
+
+                        <a href="#" class="text-white fs-5">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+
+                        <a href="#" class="text-white fs-5">
+                            <i class="bi bi-telegram"></i>
+                        </a>
+
+                        <a href="#" class="text-white fs-5">
+                            <i class="bi bi-tiktok"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Навигация -->
+                <div class="col-lg-2 col-md-6 mb-4">
+
+                    <h6 class="fw-bold mb-3">
+                        Навигация
+                    </h6>
+
+                    <ul class="list-unstyled">
+
+                        <li class="mb-2">
+                            <a href="{% url 'home' %}"
+                               class="text-secondary text-decoration-none">
+                                Главная
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="{% url 'place_list' %}"
+                               class="text-secondary text-decoration-none">
+                                Места
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="{% url 'events' %}"
+                               class="text-secondary text-decoration-none">
+                                События
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="{% url 'about' %}"
+                               class="text-secondary text-decoration-none">
+                                О проекте
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <!-- Разделы -->
+                <div class="col-lg-3 col-md-6 mb-4">
+
+                    <h6 class="fw-bold mb-3">
+                        Разделы
+                    </h6>
+
+                    <ul class="list-unstyled">
+
+                        <li class="mb-2">
+                            <a href="{% url 'place_list' %}?sort=popular"
+                               class="text-secondary text-decoration-none">
+                                Популярные места
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="{% url 'place_list' %}?sort=new"
+                               class="text-secondary text-decoration-none">
+                                Новые места
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="{% url 'place_list' %}?category=Достопримечательности"
+                               class="text-secondary text-decoration-none">
+                                Достопримечательности
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="{% url 'place_add' %}"
+                               class="text-secondary text-decoration-none">
+                                Предложить место
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <!-- Контакты -->
+                <div class="col-lg-3 col-md-6 mb-4">
+
+                    <h6 class="fw-bold mb-3">
+                        Контакты
+                    </h6>
+
+                    <p class="text-secondary mb-2">
+                        <i class="bi bi-geo-alt me-2"></i>
+                        Кыргызстан
+                    </p>
+
+                    <p class="text-secondary mb-2">
+                        <i class="bi bi-building me-2"></i>
+                        Наш город — наша история
+                    </p>
+
+                    <a href="{% url 'contact' %}"
+                       class="btn btn-outline-light btn-sm mt-2">
+                        Связаться с нами
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Разделитель -->
+            <hr class="border-secondary my-4">
+
+
+            <!-- Нижняя часть -->
+            <div class="footer-bottom" style="display: flex; flex-wrap: wrap; align-items: center;
+                        justify-content: space-between; gap: 0.75rem 1.5rem;">
+
+                <p class="text-secondary" style="margin: 0;">
+                    © 2026 ManasOur. Все права защищены.
+                </p>
+
+                <div class="footer-legal" style="display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+
+                    <a href="{% url 'privacy' %}"
+                       class="text-secondary text-decoration-none"
+                       style="text-decoration: none;">
+                        Политика конфиденциальности
+                    </a>
+
+                    <a href="{% url 'terms' %}"
+                       class="text-secondary text-decoration-none"
+                       style="text-decoration: none;">
+                        Условия использования
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>

@@ -1,0 +1,1049 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+
+/* home.css — static/css/home.css
+   :root-переменные и .container берутся из ваших общих стилей. */
+@media (max-width: 1300px) {
+    .container {
+        max-width: 1100px;
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+}
+
+/* Планшеты */
+@media (max-width: 860px) {
+    .container {
+        max-width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+/* Телефоны */
+@media (max-width: 600px) {
+    .container {
+        max-width: 100%;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+/* Очень маленькие телефоны */
+@media (max-width: 360px) {
+    .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}
+.home {
+  font-family: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--footer-bg-light);
+  color: var(--footer-text);
+  line-height: 1.5;
+}
+
+/* .home .container { padding-inline: 20px; } */
+
+.home :focus-visible {
+  outline: 3px solid var(--footer-blue);
+  outline-offset: 2px;
+}
+
+/* ===== Hero ===== */
+.hero {
+  background: var(--footer-bg);
+  border-bottom: 1px solid var(--footer-border);
+  padding: clamp(40px, 7vw, 96px) 0 clamp(48px, 8vw, 104px);
+  overflow: hidden;
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+}
+
+/* Без фото справа текст и поиск занимают всю ширину и стоят по центру */
+.hero__inner:not(:has(.collage)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.hero__content {
+  text-align: center;
+}
+
+.hero__logo {
+  margin: 0;
+  font-size: clamp(3.25rem, 9vw, 7rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+
+.hero__logo-manas { color: var(--manas-color); }
+.hero__logo-our   { color: var(--our-color); }
+
+.hero__tagline {
+  max-width: 44ch;
+  margin: 22px auto 32px;
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  color: var(--footer-text);
+}
+
+.hero__hint {
+  margin: 12px 0 0;
+  font-size: 0.9rem;
+  color: var(--footer-muted);
+}
+
+/* ===== Search ===== */
+.search {
+  display: flex;
+  max-width: 540px;
+  margin-inline: auto;
+  padding: 6px;
+  background: #fff;
+  border: 1px solid var(--footer-border);
+  border-radius: 999px;
+  box-shadow: 0 10px 30px var(--footer-shadow);
+  transition: border-color 0.25s var(--footer-ease), box-shadow 0.25s var(--footer-ease);
+}
+
+.search:focus-within {
+  border-color: var(--footer-blue);
+  box-shadow: 0 10px 34px rgba(56, 189, 248, 0.25);
+}
+
+.search__input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 20px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: var(--footer-title);
+}
+
+.search__input:focus-visible { outline: none; }
+.search__input::placeholder { color: var(--footer-muted); }
+
+.search__btn {
+  padding: 13px 28px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--our-color);
+  color: var(--footer-title);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.25s var(--footer-ease), color 0.25s var(--footer-ease);
+}
+
+.search__btn:hover {
+  background: var(--footer-green-dark);
+  color: #fff;
+}
+
+/* ===== Collage ===== */
+.collage {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 1 / 1;
+  justify-self: end;
+}
+
+.shot {
+  position: absolute;
+  margin: 0;
+  overflow: hidden;
+  border: 6px solid var(--footer-bg);
+  border-radius: 24px;
+  box-shadow: 0 18px 40px rgba(30, 80, 100, 0.16);
+  transform: rotate(var(--r, 0deg));
+  animation: settle 0.9s var(--footer-ease) both;
+}
+
+.shot img,
+.shot__ph {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shot--1 { --r: -2deg; left: 0;   top: 0;      width: 62%; height: 66%; }
+.shot--2 { --r: 2.5deg; right: 0; top: 16%;    width: 44%; height: 46%; animation-delay: 0.12s; }
+.shot--3 { --r: -1.5deg; left: 18%; bottom: 0; width: 58%; height: 38%; animation-delay: 0.24s; }
+
+.shot--1 .shot__ph,
+.shot--3 .shot__ph { background: color-mix(in srgb, var(--manas-color) 35%, #fff); }
+.shot--2 .shot__ph { background: color-mix(in srgb, var(--our-color) 35%, #fff); }
+
+.shot__name {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  max-width: calc(100% - 20px);
+  padding: 4px 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--footer-title);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@keyframes settle {
+  from { opacity: 0; transform: translateY(28px) rotate(calc(var(--r, 0deg) * 3)); }
+}
+
+/* ===== Categories ===== */
+.filters {
+  position: sticky;
+  top: var(--header-h, 0px);
+  z-index: 20;
+  background: color-mix(in srgb, var(--footer-bg-light) 88%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--footer-border);
+}
+
+.chips {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 0;
+  overflow-x: auto;
+  list-style: none;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.chips::-webkit-scrollbar { display: none; }
+
+.chip {
+  display: block;
+  flex: none;
+  padding: 8px 18px;
+  border: 1px solid var(--footer-border);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--footer-title);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  scroll-snap-align: start;
+  transition: background 0.2s var(--footer-ease), border-color 0.2s var(--footer-ease);
+}
+
+.chip:hover {
+  background: var(--footer-bg-hover);
+  border-color: var(--footer-blue);
+}
+
+.chip--active,
+.chip--active:hover {
+  background: var(--footer-title);
+  border-color: var(--footer-title);
+  color: #fff;
+}
+
+/* ===== Places ===== */
+.places { padding: 40px 0 88px; }
+
+.places__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.places__title {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--footer-title);
+}
+
+.places__count {
+  font-size: 0.95rem;
+  color: var(--footer-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  grid-auto-flow: dense;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ===== Card ===== */
+.card {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--footer-border);
+  border-radius: 18px;
+  transition: box-shadow 0.3s var(--footer-ease), border-color 0.3s var(--footer-ease);
+}
+
+.card:hover {
+  border-color: var(--footer-blue);
+  box-shadow: 0 16px 36px var(--footer-shadow);
+}
+
+.card__link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.card__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--footer-bg);
+}
+
+.card__media img,
+.card__placeholder {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card__media img { transition: transform 0.6s var(--footer-ease); }
+.card:hover .card__media img { transform: scale(1.05); }
+
+.card__placeholder {
+  background: color-mix(in srgb, var(--manas-color) 30%, #fff);
+}
+
+.card__badge,
+.card__rating {
+  position: absolute;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.card__badge  { top: 12px; left: 12px; color: var(--footer-blue-dark); }
+.card__rating { right: 12px; bottom: 12px; color: var(--footer-green-dark); }
+
+.card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  padding: 16px 18px 18px;
+}
+
+.card__name {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--footer-title);
+}
+
+.card__address,
+.card__popular {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--footer-muted);
+}
+
+.card__desc {
+  margin: 6px 0 0;
+  font-size: 0.95rem;
+}
+
+.card__popular { margin-top: auto; padding-top: 12px; }
+
+/* ===== Empty ===== */
+.empty {
+  padding: 56px 24px;
+  text-align: center;
+  background: #fff;
+  border: 1px dashed var(--footer-border);
+  border-radius: 18px;
+}
+
+.empty__title {
+  margin: 0 0 6px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--footer-title);
+}
+
+.empty__text { margin: 0; color: var(--footer-muted); }
+
+/* ===== Call to action ===== */
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 64px;
+  padding: clamp(28px, 5vw, 52px);
+  background: var(--footer-title);
+  border-radius: 28px;
+  color: #fff;
+}
+
+.cta__title {
+  margin: 0 0 8px;
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.cta__text {
+  max-width: 46ch;
+  margin: 0;
+  color: color-mix(in srgb, #fff 75%, var(--footer-title));
+}
+
+.cta__btn {
+  padding: 14px 30px;
+  border-radius: 999px;
+  background: var(--our-color);
+  color: var(--footer-title);
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.25s var(--footer-ease), color 0.25s var(--footer-ease);
+}
+
+.cta__btn:hover {
+  background: #fff;
+  color: var(--footer-title);
+}
+
+/* ===== Tablet and mobile ===== */
+@media (max-width: 860px) {
+  .hero__inner { grid-template-columns: 1fr; }
+  .collage { justify-self: center; max-width: 440px; aspect-ratio: 5 / 4; }
+}
+
+@media (max-width: 600px) {
+  .search__btn { padding: 13px 20px; }
+  .places__head { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .cta { margin-top: 48px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shot { animation: none; }
+  .search, .search__btn, .chip, .card, .card__media img, .cta__btn { transition: none; }
+  .card:hover .card__media img { transform: none; }
+}
+
+
+/* ==========================================
+   ManasOur — новая мобильная версия
+   Только телефоны. ПК и планшеты не меняются.
+   ========================================== */
+
+@media screen and (max-width: 600px) {
+
+    /* Общая ширина и отступы */
+    .home {
+        overflow: clip;
+    }
+
+    .home .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    /* Главный экран */
+    .home .hero {
+        padding: 38px 0 30px;
+    }
+
+    .home .hero__inner,
+    .home .hero__inner:not(:has(.collage)) {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 26px;
+    }
+
+    /* Название и описание */
+    .home .hero__content {
+        width: 100%;
+        order: 0;
+        text-align: center;
+    }
+
+    .home .hero__logo {
+        font-size: clamp(42px, 12vw, 58px);
+        line-height: 1.05;
+        letter-spacing: -2px;
+        overflow-wrap: anywhere;
+    }
+
+    .home .hero__tagline {
+        max-width: 34ch;
+        margin: 16px auto 22px;
+        font-size: 15px;
+        line-height: 1.65;
+    }
+
+    .home .hero__hint {
+        font-size: 12px;
+        margin-top: 10px;
+    }
+
+    /* Поиск — компактная строка */
+    .home .search {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        padding: 5px;
+        gap: 4px;
+        box-sizing: border-box;
+        border-radius: 18px;
+    }
+
+    .home .search__input {
+        width: 100%;
+        min-width: 0;
+        padding: 12px 10px;
+        font-size: 14px;
+    }
+
+    .home .search__btn {
+        flex: 0 0 auto;
+        padding: 12px 16px;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    /* Коллаж на телефоне */
+    .home .collage {
+        order: 1;
+        width: 100%;
+        max-width: 380px;
+        aspect-ratio: 1.3 / 1;
+        margin: 0 auto;
+        justify-self: center;
+    }
+
+    .home .shot {
+        border-width: 4px;
+        border-radius: 18px;
+    }
+
+    .home .shot__name {
+        left: 7px;
+        bottom: 7px;
+        max-width: calc(100% - 14px);
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+
+    /* Категории — горизонтальная прокрутка */
+    .home .filters {
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    .home .filters .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .home .chips {
+        gap: 8px;
+        padding: 12px 0;
+        margin: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .home .chip {
+        flex: 0 0 auto;
+        padding: 9px 14px;
+        font-size: 13px;
+    }
+
+    /* Секция мест */
+    .home .places {
+        padding: 28px 0 46px;
+    }
+
+    .home .places__head {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        margin-bottom: 18px;
+    }
+
+    .home .places__title {
+        font-size: 23px;
+        line-height: 1.25;
+    }
+
+    .home .places__count {
+        font-size: 13px;
+    }
+
+    /* Карточки — одна на строку */
+    .home .grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .home .grid > li {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .home .card {
+        width: 100%;
+        min-width: 0;
+        border-radius: 20px;
+    }
+
+    .home .card__media {
+        aspect-ratio: 16 / 10;
+    }
+
+    .home .card__badge {
+        top: 10px;
+        left: 10px;
+        padding: 5px 10px;
+        font-size: 11px;
+    }
+
+    .home .card__caption {
+        left: 13px;
+        right: 13px;
+        bottom: 12%;
+        gap: 8px;
+    }
+
+    .home .card__name {
+        font-size: 17px;
+        line-height: 1.25;
+    }
+
+    .home .card__rating {
+        font-size: 12px;
+    }
+
+    .home .card__body {
+        padding: 12px 14px 15px;
+        gap: 6px;
+    }
+
+    .home .card__address {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .home .card__desc {
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .home .card__popular {
+        padding-top: 8px;
+        font-size: 12px;
+    }
+
+    /* Блок добавления места */
+    .home .cta {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+        margin-top: 32px;
+        padding: 23px 19px;
+        border-radius: 22px;
+    }
+
+    .home .cta__title {
+        font-size: 21px;
+        line-height: 1.3;
+    }
+
+    .home .cta__text {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .home .cta__btn {
+        align-self: flex-start;
+        text-align: center;
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+
+    /* Сообщение, когда мест нет */
+    .home .empty {
+        padding: 35px 18px;
+    }
+
+    .home .empty__text {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+}
+
+/* Очень узкие телефоны */
+@media screen and (max-width: 360px) {
+    .home .hero__logo {
+        font-size: 39px;
+    }
+
+    .home .search__input {
+        padding-left: 7px;
+        font-size: 12px;
+    }
+
+    .home .search__btn {
+        padding: 11px 12px;
+        font-size: 12px;
+    }
+
+    .home .card__caption {
+        left: 10px;
+        right: 10px;
+    }
+
+    .home .card__name {
+        font-size: 15px;
+    }
+}
+
+
+/* ========================================
+   МОБИЛЬНАЯ ВЕРСИЯ MANASOUR
+   Не затрагивает компьютер и планшет
+======================================== */
+
+@media screen and (max-width: 600px) {
+    .home {
+        overflow: clip;
+    }
+
+    .home .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    /* Главный экран */
+    .home .hero {
+        padding: 38px 0 30px;
+    }
+
+    .home .hero__inner {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 26px;
+    }
+
+    .home .hero__content {
+        width: 100%;
+        text-align: center;
+    }
+
+    .home .hero__logo {
+        font-size: clamp(42px, 12vw, 58px);
+        line-height: 1.05;
+        letter-spacing: -2px;
+        overflow-wrap: anywhere;
+    }
+
+    .home .hero__tagline {
+        max-width: 34ch;
+        margin: 16px auto 22px;
+        font-size: 15px;
+        line-height: 1.65;
+    }
+
+    .home .hero__hint {
+        font-size: 12px;
+        margin-top: 10px;
+    }
+
+    /* Поиск */
+    .home .search {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        padding: 5px;
+        gap: 4px;
+        box-sizing: border-box;
+        border-radius: 18px;
+    }
+
+    .home .search__input {
+        width: 100%;
+        min-width: 0;
+        padding: 12px 10px;
+        font-size: 14px;
+    }
+
+    .home .search__btn {
+        flex: 0 0 auto;
+        padding: 12px 16px;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    /* Фотографии на главном экране */
+    .home .collage {
+        width: 100%;
+        max-width: 380px;
+        aspect-ratio: 1.3 / 1;
+        margin: 0 auto;
+        justify-self: center;
+    }
+
+    .home .shot {
+        border-width: 4px;
+        border-radius: 18px;
+    }
+
+    .home .shot__name {
+        left: 7px;
+        bottom: 7px;
+        max-width: calc(100% - 14px);
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+
+    /* Категории */
+    .home .filters {
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    .home .chips {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 8px;
+        padding: 12px 0;
+        margin: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .home .chip {
+        flex: 0 0 auto;
+        padding: 9px 14px;
+        font-size: 13px;
+    }
+
+    /* Места */
+    .home .places {
+        padding: 28px 0 46px;
+    }
+
+    .home .places__head {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        margin-bottom: 18px;
+    }
+
+    .home .places__title {
+        font-size: 23px;
+        line-height: 1.25;
+    }
+
+    .home .places__count {
+        font-size: 13px;
+    }
+
+    .home .grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .home .grid > li {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .home .card {
+        width: 100%;
+        min-width: 0;
+        border-radius: 20px;
+    }
+
+    .home .card__media {
+        aspect-ratio: 16 / 10;
+    }
+
+    .home .card__badge {
+        top: 10px;
+        left: 10px;
+        padding: 5px 10px;
+        font-size: 11px;
+    }
+
+    .home .card__caption {
+        left: 13px;
+        right: 13px;
+        bottom: 12%;
+        gap: 8px;
+    }
+
+    .home .card__name {
+        font-size: 17px;
+        line-height: 1.25;
+    }
+
+    .home .card__rating {
+        font-size: 12px;
+    }
+
+    .home .card__body {
+        padding: 12px 14px 15px;
+        gap: 6px;
+    }
+
+    .home .card__address {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .home .card__desc {
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .home .card__popular {
+        padding-top: 8px;
+        font-size: 12px;
+    }
+
+    /* Нижний призыв к действию */
+    .home .cta {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+        margin-top: 32px;
+        padding: 23px 19px;
+        border-radius: 22px;
+    }
+
+    .home .cta__title {
+        font-size: 21px;
+        line-height: 1.3;
+    }
+
+    .home .cta__text {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .home .cta__btn {
+        align-self: flex-start;
+        text-align: center;
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+
+    .home .empty {
+        padding: 35px 18px;
+    }
+
+    .home .empty__text {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+}
+
+/* Очень маленькие телефоны */
+@media screen and (max-width: 360px) {
+    .home .hero__logo {
+        font-size: 39px;
+    }
+
+    .home .search__input {
+        padding-left: 7px;
+        font-size: 12px;
+    }
+
+    .home .search__btn {
+        padding: 11px 12px;
+        font-size: 12px;
+    }
+
+    .home .card__caption {
+        left: 10px;
+        right: 10px;
+    }
+
+    .home .card__name {
+        font-size: 15px;
+    }
+}
+
+
+/* Карточки мест: одна колонка на телефонах */
+
+/* Карточки внутри container на телефонах */
+@media screen and (max-width: 600px) {
+    .home .grid {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        grid-auto-flow: row;
+        width: 100%;
+        min-width: 0;
+        gap: 18px;
+        box-sizing: border-box;
+    }
+
+    .home .grid > li {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .home .card {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .home .card__link {
+        min-width: 0;
+    }
+
+    .home .card__media {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+    }
+}

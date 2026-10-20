@@ -1,0 +1,189 @@
+/* header-user.css — добавьте в конец стилей шапки.
+   Если раньше вставляли header-login.css, удалите тот блок: этот файл его заменяет. */
+
+.navbar .btn,
+.navbar button {
+    font-family: inherit;
+}
+
+/* ===== Порядок элементов ===== */
+
+/* Телефон: аккаунт, логотип, Войти (для гостя), бургер, затем меню */
+.navbar .nav-user       { order: 1; }
+.navbar .navbar-brand   { order: 2; }
+.navbar .nav-login      { order: 3; margin-left: auto; }
+.navbar .navbar-toggler { order: 4; margin-left: auto; }
+.navbar .nav-login + .navbar-toggler { margin-left: 0; }
+.navbar .navbar-collapse { order: 5; }
+
+/* Компьютер: аккаунт, логотип, меню, Войти справа (для гостя) */
+@media (min-width: 992px) {
+    .navbar .navbar-collapse { order: 3; }
+    .navbar .nav-login       { order: 4; margin-left: 0; }
+}
+
+.navbar .nav-user,
+.navbar .nav-login {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar .nav-user__form {
+    margin: 0;
+}
+
+
+/* ===== Кнопка аккаунта и «Войти» ===== */
+
+.navbar .btn.btn-login {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.6rem 1.3rem;
+    background: #ffffff;
+    color: var(--footer-title);
+    border: 1px solid var(--footer-border);
+    box-shadow: 0 4px 12px var(--footer-shadow);
+}
+
+.navbar .btn.btn-login i {
+    color: var(--manas-color);
+    transition: color 0.2s ease;
+}
+
+.navbar .btn.btn-login:hover {
+    color: var(--footer-blue-dark);
+    background: var(--footer-bg-hover);
+    border-color: var(--manas-color);
+    box-shadow: 0 8px 18px var(--footer-shadow);
+}
+
+.navbar .btn.btn-login:hover i {
+    color: var(--our-color);
+}
+
+
+/* ===== Кнопка «Выйти»: дверь, при наведении открывается и выезжает слово ===== */
+
+.logout-btn {
+    display: inline-flex;
+    align-items: center;
+    height: 42px;
+    padding: 0 10px;
+    overflow: hidden;
+    background: #ffffff;
+    color: var(--footer-title);
+    border: 1px solid var(--footer-border);
+    border-radius: 999px;
+    box-shadow: 0 4px 12px var(--footer-shadow);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        background 0.25s var(--footer-ease),
+        color 0.25s var(--footer-ease),
+        border-color 0.25s var(--footer-ease),
+        transform 0.2s var(--footer-ease);
+}
+
+/* Две иконки лежат друг на друге: закрытая дверь и открытая */
+.logout-btn__icons {
+    position: relative;
+    flex: none;
+    width: 20px;
+    height: 20px;
+}
+
+.logout-btn__icon {
+    position: absolute;
+    inset: 0;
+    display: block;
+    font-size: 1.25rem;
+    line-height: 20px;
+    transition: opacity 0.25s ease, transform 0.4s var(--footer-ease);
+}
+
+.logout-btn__icon--open {
+    opacity: 0;
+    transform: translateX(-5px) scale(0.8);
+}
+
+/* Слово «Выйти» спрятано и выезжает из кнопки */
+.logout-btn__label {
+    max-width: 0;
+    margin-left: 0;
+    overflow: hidden;
+    opacity: 0;
+    white-space: nowrap;
+    transform: translateX(-8px);
+    transition:
+        max-width 0.45s var(--footer-ease),
+        margin-left 0.45s var(--footer-ease),
+        opacity 0.3s ease,
+        transform 0.45s var(--footer-ease);
+}
+
+.logout-btn:hover,
+.logout-btn:focus-visible {
+    background: #fef2f2;
+    color: #b91c1c;
+    border-color: #fecaca;
+}
+
+.logout-btn:hover .logout-btn__icon--closed,
+.logout-btn:focus-visible .logout-btn__icon--closed {
+    opacity: 0;
+    transform: translateX(5px) scale(0.8);
+}
+
+.logout-btn:hover .logout-btn__icon--open,
+.logout-btn:focus-visible .logout-btn__icon--open {
+    opacity: 1;
+    transform: none;
+}
+
+.logout-btn:hover .logout-btn__label,
+.logout-btn:focus-visible .logout-btn__label {
+    max-width: 5rem;
+    margin-left: 0.5rem;
+    opacity: 1;
+    transform: none;
+}
+
+.logout-btn:active {
+    transform: scale(0.96);
+}
+
+.logout-btn:focus-visible {
+    outline: 3px solid var(--footer-blue);
+    outline-offset: 2px;
+}
+
+
+/* ===== Телефон ===== */
+
+@media (max-width: 575.98px) {
+    .navbar > .container {
+        column-gap: 0.5rem;
+    }
+
+    /* У аккаунта остаётся только иконка, слово «Выйти» не выезжает */
+    .navbar .btn.btn-login {
+        padding: 0.55rem 0.9rem;
+    }
+
+    .nav-user__name,
+    .logout-btn__label,
+    .navbar-brand .tagline {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .logout-btn,
+    .logout-btn__icon,
+    .logout-btn__label {
+        transition: none;
+    }
+}

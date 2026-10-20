@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Редактировать профиль — ManasOur{% endblock %}
+
+{% block description %}Измените имя, фамилию и почту в вашем профиле ManasOur.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .pedit {
+        display: flex;
+        justify-content: center;
+        padding: clamp(32px, 6vw, 64px) 20px;
+        background: var(--footer-bg-light);
+        color: var(--footer-text);
+    }
+
+    .pedit__card {
+        width: 100%;
+        max-width: 560px;
+        padding: clamp(24px, 5vw, 40px);
+        background: #fff;
+        border: 1px solid var(--footer-border);
+        border-radius: 24px;
+        box-shadow: 0 16px 40px var(--footer-shadow);
+    }
+
+    .pedit__title {
+        margin: 0 0 6px;
+        font-size: 1.8rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--footer-title);
+    }
+
+    .pedit__subtitle { margin: 0 0 26px; color: var(--footer-muted); }
+
+    .pedit__form { display: flex; flex-direction: column; gap: 18px; }
+
+    .pedit__field { display: flex; flex-direction: column; gap: 6px; }
+
+    .pedit__label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--footer-title);
+    }
+
+    .pedit__input {
+        width: 100%;
+        padding: 13px 16px;
+        background: var(--footer-bg-light);
+        border: 1px solid var(--footer-border);
+        border-radius: var(--footer-radius);
+        font: inherit;
+        color: var(--footer-title);
+        transition: border-color 0.2s var(--footer-ease), box-shadow 0.2s var(--footer-ease), background 0.2s var(--footer-ease);
+    }
+
+    .pedit__input:focus {
+        outline: none;
+        background: #fff;
+        border-color: var(--footer-blue);
+        box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18);
+    }
+
+    .pedit__input--error { border-color: #dc2626; }
+
+    .pedit__input[disabled] {
+        color: var(--footer-muted);
+        cursor: not-allowed;
+    }
+
+    .pedit__hint, .pedit__error { margin: 0; font-size: 0.85rem; }
+    .pedit__hint { color: var(--footer-muted); }
+    .pedit__error { color: #b91c1c; }
+
+    .pedit__actions { display: flex; gap: 10px; margin-top: 6px; }
+
+    .pedit__save, .pedit__cancel {
+        flex: 1;
+        padding: 14px 20px;
+        border-radius: 999px;
+        font: inherit;
+        font-weight: 700;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background 0.25s var(--footer-ease);
+    }
+
+    .pedit__save {
+        background: var(--footer-title);
+        border: 0;
+        color: #fff;
+    }
+
+    .pedit__save:hover { background: var(--footer-green-dark); }
+
+    .pedit__cancel {
+        background: #fff;
+        border: 1px solid var(--footer-border);
+        color: var(--footer-title);
+    }
+
+    .pedit__cancel:hover { background: var(--footer-bg-hover); }
+
+    .pedit :focus-visible {
+        outline: 3px solid var(--footer-blue);
+        outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .pedit__input, .pedit__save, .pedit__cancel { transition: none; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="pedit">
+    <div class="pedit__card">
+
+        <h1 class="pedit__title">Редактировать профиль</h1>
+        <p class="pedit__subtitle">Эти данные будут видны в вашем профиле.</p>
+
+        <form class="pedit__form" method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="pedit__field">
+                <label class="pedit__label" for="id_username">Имя пользователя</label>
+                <input class="pedit__input" type="text" id="id_username" value="{{ user.get_username }}" disabled>
+                <p class="pedit__hint">Имя пользователя изменить нельзя.</p>
+            </div>
+
+            <div class="pedit__field">
+                <label class="pedit__label" for="id_first_name">Имя</label>
+                <input
+                    class="pedit__input{% if form.first_name.errors %} pedit__input--error{% endif %}"
+                    type="text" name="first_name" id="id_first_name" maxlength="150"
+                    value="{{ form.first_name.value|default:'' }}" autocomplete="given-name"
+                >
+                {% for e in form.first_name.errors %}<p class="pedit__error">{{ e }}</p>{% endfor %}
+            </div>
+
+            <div class="pedit__field">
+                <label class="pedit__label" for="id_last_name">Фамилия</label>
+                <input
+                    class="pedit__input{% if form.last_name.errors %} pedit__input--error{% endif %}"
+                    type="text" name="last_name" id="id_last_name" maxlength="150"
+                    value="{{ form.last_name.value|default:'' }}" autocomplete="family-name"
+                >
+                {% for e in form.last_name.errors %}<p class="pedit__error">{{ e }}</p>{% endfor %}
+            </div>
+
+            <div class="pedit__field">
+                <label class="pedit__label" for="id_email">Электронная почта</label>
+                <input
+                    class="pedit__input{% if form.email.errors %} pedit__input--error{% endif %}"
+                    type="email" name="email" id="id_email" maxlength="254"
+                    value="{{ form.email.value|default:'' }}" autocomplete="email"
+                >
+                {% for e in form.email.errors %}<p class="pedit__error">{{ e }}</p>{% endfor %}
+            </div>
+
+            <div class="pedit__actions">
+                <a class="pedit__cancel" href="{% url 'profile' %}">Отмена</a>
+                <button class="pedit__save" type="submit">Сохранить</button>
+            </div>
+        </form>
+
+    </div>
+</section>
+{% endblock %}

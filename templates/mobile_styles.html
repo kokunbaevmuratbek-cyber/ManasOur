@@ -275,23 +275,43 @@
     .footer-legal { gap: 0.25rem 1rem !important; }
 }
 
-/* Шапка на телефоне: профиль и «Выйти» остаются ровными круглыми кнопками, как на компьютере.
-   (Имя рядом с иконкой на таком экране скрыто, поэтому кнопка без текста.) */
+/* Шапка на телефоне: компактные кнопки одной высоты (40px).
+   Профиль и «Выйти» круглые (имя на таком экране скрыто), «Войти» небольшая таблетка. */
 @media (max-width: 575.98px) {
+    .navbar { padding-top: 0.45rem !important; padding-bottom: 0.45rem !important; }
+    .navbar > .container { column-gap: 1.1rem !important; }
+    .navbar .nav-user { margin-right: 0.75rem; }
+
     .navbar .nav-user a.btn-login[title="Мой аккаунт"],
     .navbar .nav-user .logout-btn {
         flex: none;
         justify-content: center;
-        width: 44px;
-        height: 44px;
-        min-height: 0;
+        width: 40px;
+        height: 40px;
+        min-height: 0 !important;
         padding: 0 !important;
         border-radius: 50%;
     }
 
     .navbar .nav-user a.btn-login[title="Мой аккаунт"] i,
     .navbar .nav-user .logout-btn i {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+
+    /* «Войти» для гостя */
+    .navbar .nav-user a.btn-login:not([title]) {
+        flex: none;
+        gap: 6px;
+        height: 40px;
+        min-height: 0 !important;
+        padding: 0 16px !important;
+        font-size: 0.92rem;
+        line-height: 1;
+    }
+
+    .navbar .nav-user a.btn-login:not([title]) i {
+        font-size: 1rem;
         line-height: 1;
     }
 }
